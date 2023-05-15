@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container mt-5">
+
+    <br><br>
+
+    <a>
+        To be, or not to be, that is the question:<br>
+        Whether 'tis nobler in the mind to suffer<br>
+        The slings and arrows of outrageous fortune,<br>
+        Or to take Arms against a Sea of troubles,<br>
+        And by opposing end them: to die, to sleep<br>
+        No more; and by a sleep, to say we end<br>
+        The heart-ache, and the thousand natural shocks<br>
+        That Flesh is heir to? 'Tis a consummation<br>
+        Devoutly to be wished. To die, to sleep,<br>
+        To sleep, perchance to Dream;<br>
+    </a>
+
+    <br><br>
+
+    <p><a href="/new_custom_taco"><img th:src="@{/images/Shakespeare.jpg}" /></a></p>
+
+    <br>
+
+    <a href="/new_custom_taco">Create new custom taco</a>
+
+
+</div>
+
+</body>
+</html>

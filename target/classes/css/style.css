@@ -1,0 +1,17 @@
+.button_a {
+    border: none;
+    padding: 0 10px;
+    background: transparent;
+    cursor: pointer;
+    margin: 0;
+}
+
+.ingredient_list {
+    width: 100%;
+}
+
+.ingredient_items {
+    display: inline-block;
+    width: 13.93%;
+    vertical-align: top;
+}

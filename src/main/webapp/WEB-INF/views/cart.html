@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+<header th:insert="fragments/header :: header"></header>
+
+<div class="container mt-5">
+
+    <form th:method="POST" th:action="@{/cart}" th:object="${purchase}">
+
+        <br><br>
+
+        <h5>Оформление заказа</h5>
+
+        Ваш заказ
+
+        <br>
+
+        тако
+        <br>
+        тако
+        <br>
+
+        <h5>Итого:</h5>
+
+        <br><br>
+
+        <h5>Адрес доставки</h5>
+
+        <label for="deliveryName">Ваше имя: </label>
+        <input type="text" th:field="*{deliveryName}" id="deliveryName"/>
+        <div style="color:red" th:if="${#fields.hasErrors('deliveryName')}" th:errors="*{deliveryName}">Name Error</div>
+
+        <br><br>
+
+        <label for="deliveryStreet">Улица: </label>
+        <input type="text" th:field="*{deliveryStreet}" id="deliveryStreet"/>
+        <span class="validationError" th:if="${#fields.hasErrors('deliveryStreet')}" th:errors="*{deliveryStreet}">Street Error</span>
+        <br/>
+
+
+    </form>
+
+</div>
+
+</body>
+</html>
