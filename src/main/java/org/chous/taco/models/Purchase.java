@@ -6,8 +6,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -36,7 +38,13 @@ public class Purchase {
 //    private String ccCVV;
 
     @ManyToMany()
-    private List<Taco> tacos = new ArrayList<>();
+    @JoinTable(
+            name = "purchase_tacos",
+            joinColumns = @JoinColumn(name = "purchase_id"),
+            inverseJoinColumns = @JoinColumn(name = "taco_id")
+    )
+    @Size(min = 1, message = "You must choose at least 1 ingredient")
+    private Set<Taco> tacos;
 
 
     public Purchase() {

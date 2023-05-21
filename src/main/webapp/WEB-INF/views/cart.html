@@ -23,12 +23,18 @@
 
         <br>
 
-        тако
-        <br>
-        тако
+        <div>
+            <th:block th:each="taco : ${activeTacos}">
+
+                <span th:text="${taco.getName()} + ' ' + ${taco.getPrice()} + ' byn'" style="text-align: center"></span>
+                <br>
+
+            </th:block>
+        </div>
+
         <br>
 
-        <h5>Итого:</h5>
+        <span th:text="'Итого: ' + ${totalPrise} + ' byn'" style="text-align: center"></span>
 
         <br><br>
 
@@ -42,8 +48,16 @@
 
         <label for="deliveryStreet">Улица: </label>
         <input type="text" th:field="*{deliveryStreet}" id="deliveryStreet"/>
-        <span class="validationError" th:if="${#fields.hasErrors('deliveryStreet')}" th:errors="*{deliveryStreet}">Street Error</span>
+        <div style="color:red" th:if="${#fields.hasErrors('deliveryStreet')}" th:errors="*{deliveryStreet}">Street Error</div>
         <br/>
+
+        <br>
+        <br>
+
+        <input type="submit" value="Заказать!"/>
+
+        <br>
+        <br>
 
 
     </form>

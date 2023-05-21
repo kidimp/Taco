@@ -179,15 +179,15 @@
         <br>
 
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="smallSize">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="smallSize" value="0.75" th:field="*{size}">
             <label class="form-check-label" for="smallSize">Маленький</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="mediumSize" checked>
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="mediumSize" value="1.0" th:field="*{size}" th:checked="checked" >
             <label class="form-check-label" for="mediumSize">Средний</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="bigSize">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="bigSize" value="1.25" th:field="*{size}">
             <label class="form-check-label" for="bigSize">Большой</label>
         </div>
 

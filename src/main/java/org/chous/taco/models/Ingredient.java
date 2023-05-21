@@ -1,7 +1,6 @@
 package org.chous.taco.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,14 +9,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Entity
-@Data
 public class Ingredient {
 
     @Id
@@ -45,9 +41,6 @@ public class Ingredient {
     private int carbs;
     @Min(value = 0, message = "Price must not be negative")
     private BigDecimal price = new BigDecimal("0.0");
-
-    @ManyToMany(mappedBy = "ingredients")
-    private List<Taco> tacos = new ArrayList<>();
 
 
     public Ingredient() {

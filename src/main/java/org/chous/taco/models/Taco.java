@@ -1,7 +1,6 @@
 package org.chous.taco.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,14 +8,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @Entity
-@Data
 public class Taco {
 
     @Id
@@ -32,19 +29,21 @@ public class Taco {
     private int fat;
     private int carbs;
     private BigDecimal price = new BigDecimal("0.0");
+//    @Column(nullable = false, columnDefinition = "TINYINT(1)", name = "is_custom")
+    private boolean isCustom;
+//    @Column(nullable = false, columnDefinition = "TINYINT(1)", name = "is_active")
+    private boolean isActive;
 
-    @ManyToMany(targetEntity = Ingredient.class)
-//    @JoinTable(
-//            name = "taco_ingredient",
-//            joinColumns = @JoinColumn(name = "taco_id"),
-//            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-//    )
+    @ManyToMany()
+    @JoinTable(
+            name = "taco_ingredients",
+            joinColumns = @JoinColumn(name = "taco_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
     @Size(min = 1, message = "You must choose at least 1 ingredient")
-    private List<Ingredient> ingredients = new ArrayList<>();
+    private Set<Ingredient> ingredients;
 
 
     public Taco() {
     }
-
-
 }
