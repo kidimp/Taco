@@ -36,7 +36,7 @@ public class TacoDAO {
 
 
     public List<Taco> getActiveTacos() {
-        return jdbcTemplate.query("SELECT * FROM taco WHERE is_active=true", new BeanPropertyRowMapper<>(Taco.class));
+        return jdbcTemplate.query("SELECT * FROM taco WHERE active=true", new BeanPropertyRowMapper<>(Taco.class));
     }
 
 
@@ -48,7 +48,8 @@ public class TacoDAO {
 
 
     public void save(Taco taco) {
-        jdbcTemplate.update("INSERT INTO taco (name, size, weight, calories, protein, fat, carbs, price, is_custom, is_active) " +
+        jdbcTemplate.update("INSERT INTO taco (name, size, weight, calories, protein, fat, carbs, price, " +
+                        "custom, active) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 taco.getName(), taco.getSize(), taco.getWeight(), taco.getCalories(),
                 taco.getProtein(), taco.getFat(), taco.getCarbs(), taco.getPrice(),
@@ -60,9 +61,17 @@ public class TacoDAO {
                 taco_id, ingredient_id);
     }
 
+/** FIX it!
+    public List<Integer> getIngredientsId(int taco_id) {
+        return jdbcTemplate.query("SELECT * FROM taco_ingredients WHERE taco_id=?", new Object[]{taco_id},
+                new BeanPropertyRowMapper<>(Integer.class));
+    }
+ **/
+
 
     public void update(int id, Taco updatedTaco) {
-        jdbcTemplate.update("UPDATE taco SET name=?, size=?, weight=?, calories=?, protein=?, fat=?, carbs=?, price=?, is_custom=?, is_active=? WHERE id=?",
+        jdbcTemplate.update("UPDATE taco SET name=?, size=?, weight=?, calories=?, protein=?, fat=?, carbs=?, price=?, " +
+                        "custom=?, active=? WHERE id=?",
                 updatedTaco.getName(), updatedTaco.getSize(), updatedTaco.getWeight(), updatedTaco.getCalories(),
                 updatedTaco.getProtein(), updatedTaco.getFat(), updatedTaco.getCarbs(), updatedTaco.getPrice(),
                 updatedTaco.isCustom(), updatedTaco.isActive(), id);

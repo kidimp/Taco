@@ -41,7 +41,20 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
+        List<Taco> standardTacos = tacoDAO.tacos();
+
+        /** FIX it!
+         for (Taco taco : standardTacos) {
+         List<Integer> ingredsIds = tacoDAO.getIngredientsId(taco.getId());
+         System.out.println("hello");
+
+         taco.setIngredients();
+         }
+         **/
+
+        model.addAttribute("standardTacos", standardTacos);
+
         return "home";
     }
 
@@ -105,7 +118,6 @@ public class HomeController {
 
         // Помечаем, что мы создаём кастомный тако.
         taco.setCustom(true);
-
         // Помечаем, что данный тако принадлежит активному заказу.
         taco.setActive(true);
 
@@ -164,7 +176,6 @@ public class HomeController {
         }
 
         List<Taco> activeTacos = tacoDAO.getActiveTacos();
-
         for (Taco taco : activeTacos) {
             taco.setActive(false);
             tacoDAO.update(taco.getId(), taco);

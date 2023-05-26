@@ -16,22 +16,21 @@
 
     <br><br>
 
-    <a>
-        To be, or not to be, that is the question:<br>
-        Whether 'tis nobler in the mind to suffer<br>
-        The slings and arrows of outrageous fortune,<br>
-        Or to take Arms against a Sea of troubles,<br>
-        And by opposing end them: to die, to sleep<br>
-        No more; and by a sleep, to say we end<br>
-        The heart-ache, and the thousand natural shocks<br>
-        That Flesh is heir to? 'Tis a consummation<br>
-        Devoutly to be wished. To die, to sleep,<br>
-        To sleep, perchance to Dream;<br>
-    </a>
+    <div>
+        <ul class="standardTacos">
+            <th:block th:each="taco : ${standardTacos}">
+
+                <span th:text="${taco.getName()}"></span>
+
+                <br>
+
+            </th:block>
+        </ul>
+    </div>
 
     <br><br>
 
-    <p><a href="/new_custom_taco"><img th:src="@{/images/Shakespeare.jpg}" /></a></p>
+    <p><a href="/new_custom_taco"><img th:src="@{/images/Shakespeare.jpg}"/></a></p>
 
     <br>
 

@@ -6,45 +6,160 @@ values
 ('Ржаная', 0, '/images/ingredients/wrap/rye.png', 38, 143, 3, 7, 17, 2.0),
 ('Сырная', 0, '/images/ingredients/wrap/cheese.png', 35, 124, 7, 10, 2, 2.5),
 
-('Курица', 1, '/images/ingredients/protein/chicken.png', 49, 103, 13, 6, 0, 2.5),
-('Свинина', 1, '/images/ingredients/protein/beef.png', 51, 245, 6, 25, 0, 3.0),
-('Говядина', 1, '/images/ingredients/protein/pork.png', 49, 192, 16, 14, 0, 3.0),
-('Бекон', 1, '/images/ingredients/protein/bakon.png', 50, 250, 12, 23, 0, 3.0),
-('Баварские колбаски', 1, '/images/ingredients/protein/bavarian-sausages.png', 52, 99, 6, 9, 0, 3.0),
-('Бобы', 1, '/images/ingredients/protein/beans.png', 55, 29, 3, 0, 4, 2.5),
-('Нут', 1, '/images/ingredients/protein/chickpea-cutlets.png', 54, 76, 4, 3, 8, 3.0);
+('Курица', 1, '/images/ingredients/protein/chicken.png', 74, 103, 13, 6, 0, 2.5),
+('Свинина', 1, '/images/ingredients/protein/beef.png', 76, 245, 6, 25, 0, 3.0),
+('Говядина', 1, '/images/ingredients/protein/pork.png', 74, 192, 16, 14, 0, 3.0),
+('Бекон', 1, '/images/ingredients/protein/bakon.png', 75, 250, 12, 23, 0, 3.0),
+('Баварские колбаски', 1, '/images/ingredients/protein/bavarian-sausages.png', 77, 99, 6, 9, 0, 3.0),
+('Бобы', 1, '/images/ingredients/protein/beans.png', 80, 29, 3, 0, 4, 2.5),
+('Нут', 1, '/images/ingredients/protein/chickpea-cutlets.png', 79, 76, 4, 3, 8, 3.0);
 
 insert ingredient(name, type, img_path, weight, calories, protein, fat, carbs, price)
 values
-('Томаты', 2, 'img_path', 31, 6, 0, 0, 1, 1.0),
-('Маринованные огурчики', 2, 'img_path', 32, 5, 1, 0, 0, 1.0),
-('Болгарский перец', 2, 'img_path', 30, 8, 0, 0, 1, 1.0),
-('Халапеньо', 2, 'img_path', 28, 9, 0, 0, 2, 1.5),
-('Лук белый', 2, 'img_path', 29, 13, 0, 0, 3, 1.0),
-('Лук маринованный', 2, 'img_path', 31, 6, 0, 0, 1, 1.0),
-('Лук во фритюре', 2, 'img_path', 28, 66, 3, 1, 13, 1.0),
-('Салат', 2, 'img_path', 30, 4, 0, 0, 0, 1.0),
-('Картофель', 2, 'img_path', 30, 25, 1, 0, 5, 1.0),
-('Гуакомолле', 2, 'img_path', 32, 51, 1, 3, 5, 2.0),
-('Песто', 2, 'img_path', 32, 136, 2, 14, 2, 2.0),
+('Томаты', 2, 'img_path', 41, 6, 0, 0, 1, 1.0),
+('Маринованные огурчики', 2, 'img_path', 42, 5, 1, 0, 0, 1.0),
+('Болгарский перец', 2, 'img_path', 40, 8, 0, 0, 1, 1.0),
+('Халапеньо', 2, 'img_path', 38, 9, 0, 0, 2, 1.5),
+('Лук белый', 2, 'img_path', 39, 13, 0, 0, 3, 1.0),
+('Лук маринованный', 2, 'img_path', 41, 6, 0, 0, 1, 1.0),
+('Лук во фритюре', 2, 'img_path', 38, 66, 3, 1, 13, 1.0),
+('Салат', 2, 'img_path', 40, 4, 0, 0, 0, 1.0),
+('Картофель', 2, 'img_path', 40, 25, 1, 0, 5, 1.0),
+('Гуакомолле', 2, 'img_path', 42, 51, 1, 3, 5, 2.0),
+('Песто', 2, 'img_path', 42, 136, 2, 14, 2, 2.0),
 
-('Сыр чеддар', 3, 'img_path', 31, 118, 7, 10, 0, 1.5),
-('Моцарелла', 3, 'img_path', 31, 73, 6, 5, 0, 1.5),
-('Смесь сыров', 3, 'img_path', 31, 107, 8, 8, 1, 1.5);
+('Сыр чеддар', 3, 'img_path', 41, 118, 7, 10, 0, 1.5),
+('Моцарелла', 3, 'img_path', 41, 73, 6, 5, 0, 1.5),
+('Смесь сыров', 3, 'img_path', 41, 107, 8, 8, 1, 1.5);
 
 insert ingredient(name, type, img_path, weight, calories, protein, fat, carbs, price)
 values
-('Альфредо', 4, '/images/ingredients/sause/alfredo.png', 12, 49, 1, 5, 0, 0.5),
-('Барбекю', 4, '/images/ingredients/sause/barbecue.png', 12, 20, 0, 0, 5, 0.5),
-('Горчичный', 4, '/images/ingredients/sause/mustard.png', 12, 27, 0, 2, 1, 0.5),
-('Грибной', 4, '/images/ingredients/sause/mushroom.png', 12, 10, 0, 1, 1, 0.5),
-('Карри', 4, '/images/ingredients/sause/curry.png', 12, 32, 0, 3, 2, 0.5),
-('Кетчуп', 4, '/images/ingredients/sause/ketchup.png', 12, 12, 0, 0, 3, 0.5),
-('Кисло-сладкий', 4, '/images/ingredients/sause/sweet-and-sour.png', 12, 20, 0, 0, 5, 0.5),
-('Маринара', 4, '/images/ingredients/sause/marinara.png', 12, 9, 0, 0, 1, 0.5),
-('Ранч', 4, '/images/ingredients/sause/ranch.png', 12, 58, 0, 6, 1, 0.5),
-('Сальса', 4, '/images/ingredients/sause/salsa.png', 12, 9, 0, 0, 1, 0.5),
-('Сырный', 4, '/images/ingredients/sause/cheese.png', 12, 43, 0, 4, 1, 0.5),
-('Тартар', 4, '/images/ingredients/sause/tartar.png', 12, 56, 0, 6, 1, 0.5),
-('Терияки', 4, '/images/ingredients/sause/teriyaki.png', 12, 11, 1, 0, 2, 0.5),
-('Чили', 4, '/images/ingredients/sause/chili.png', 12, 14, 0, 0, 4, 0.5);
+('Альфредо', 4, '/images/ingredients/sause/alfredo.png', 17, 49, 1, 5, 0, 0.5),
+('Барбекю', 4, '/images/ingredients/sause/barbecue.png', 17, 20, 0, 0, 5, 0.5),
+('Горчичный', 4, '/images/ingredients/sause/mustard.png', 17, 27, 0, 2, 1, 0.5),
+('Грибной', 4, '/images/ingredients/sause/mushroom.png', 17, 10, 0, 1, 1, 0.5),
+('Карри', 4, '/images/ingredients/sause/curry.png', 17, 32, 0, 3, 2, 0.5),
+('Кетчуп', 4, '/images/ingredients/sause/ketchup.png', 17, 12, 0, 0, 3, 0.5),
+('Кисло-сладкий', 4, '/images/ingredients/sause/sweet-and-sour.png', 17, 20, 0, 0, 5, 0.5),
+('Маринара', 4, '/images/ingredients/sause/marinara.png', 17, 9, 0, 0, 1, 0.5),
+('Ранч', 4, '/images/ingredients/sause/ranch.png', 17, 58, 0, 6, 1, 0.5),
+('Сальса', 4, '/images/ingredients/sause/salsa.png', 17, 9, 0, 0, 1, 0.5),
+('Сырный', 4, '/images/ingredients/sause/cheese.png', 17, 43, 0, 4, 1, 0.5),
+('Тартар', 4, '/images/ingredients/sause/tartar.png', 17, 56, 0, 6, 1, 0.5),
+('Терияки', 4, '/images/ingredients/sause/teriyaki.png', 17, 11, 1, 0, 2, 0.5),
+('Чили', 4, '/images/ingredients/sause/chili.png', 17, 14, 0, 0, 4, 0.5);
+
+
+insert taco(name, size, weight, calories, protein, fat, carbs, price, custom, active)
+values
+('Тако с курицей', 1, 301, 364, 21, 19, 25, 10.00, 0, 0),
+('Тако со свининой', 1, 306, 471, 15, 35, 20, 10.50, 0, 0),
+('Тако с говядиной', 1, 303, 426, 24, 26, 17, 10.50, 0, 0),
+('Тако с беконом', 1, 305, 570, 22, 41, 27, 11.50, 0, 0),
+('Тако с баварскими колбасками', 1, 305, 464, 20, 30, 30, 10.50, 0, 0),
+('Вегетарианское тако с бобами', 1, 314, 423, 16, 16, 30, 10.00, 0, 0),
+('Вегетарианское тако с нутом', 1, 312, 402, 17, 17, 29, 11.00, 0, 0),
+('Мясное тако', 1, 378, 669, 30, 30, 23, 13.50, 0, 0),
+('Сырное тако', 1, 347, 537, 33, 33, 7, 12.00, 0, 0),
+('Острое тако', 1, 301, 564, 20, 20, 34, 11.00, 0, 0);
+
+
+insert taco_ingredients(taco_id, ingredient_id)
+values
+(1, 1),
+(1, 4),
+(1, 11),
+(1, 13),
+(1, 15),
+(1, 23),
+(1, 29),
+(1, 31),
+(2, 1),
+(2, 5),
+(2, 12),
+(2, 16),
+(2, 18),
+(2, 23),
+(2, 26),
+(2, 34),
+(3, 1),
+(3, 6),
+(3, 11),
+(3, 16),
+(3, 18),
+(3, 23),
+(3, 27),
+(3, 32),
+(4, 1),
+(4, 7),
+(4, 11),
+(4, 18),
+(4, 20),
+(4, 22),
+(4, 30),
+(4, 31),
+(5, 1),
+(5, 8),
+(5, 11),
+(5, 12),
+(5, 17),
+(5, 22),
+(5, 25),
+(5, 30),
+(6, 2),
+(6, 9),
+(6, 11),
+(6, 13),
+(6, 19),
+(6, 24),
+(6, 25),
+(6, 36),
+(7, 2),
+(7, 10),
+(7, 12),
+(7, 14),
+(7, 18),
+(7, 24),
+(7, 25),
+(7, 32),
+(8, 1),
+(8, 5),
+(8, 6),
+(8, 11),
+(8, 13),
+(8, 18),
+(8, 23),
+(8, 26),
+(8, 30),
+(9, 3),
+(9, 4),
+(9, 11),
+(9, 13),
+(9, 16),
+(9, 22),
+(9, 23),
+(9, 35),
+(9, 36),
+(10, 1),
+(10, 5),
+(10, 12),
+(10, 14),
+(10, 17),
+(10, 24),
+(10, 34),
+(10, 38);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

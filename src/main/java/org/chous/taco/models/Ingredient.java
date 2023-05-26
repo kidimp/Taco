@@ -2,6 +2,7 @@ package org.chous.taco.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -10,10 +11,10 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
+@Entity
 @Getter
 @Setter
-@AllArgsConstructor
-@Entity
+@NoArgsConstructor
 public class Ingredient {
 
     @Id
@@ -41,10 +42,6 @@ public class Ingredient {
     private int carbs;
     @Min(value = 0, message = "Price must not be negative")
     private BigDecimal price = new BigDecimal("0.0");
-
-
-    public Ingredient() {
-    }
 
 
     public enum Type {

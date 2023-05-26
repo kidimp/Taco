@@ -2,6 +2,7 @@ package org.chous.taco.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Entity
 @Getter
 @Setter
-@AllArgsConstructor
-@Entity
+@NoArgsConstructor
 public class Purchase {
 
     @Id
@@ -45,9 +46,5 @@ public class Purchase {
     )
     @Size(min = 1, message = "You must choose at least 1 ingredient")
     private Set<Taco> tacos;
-
-
-    public Purchase() {
-    }
 
 }
