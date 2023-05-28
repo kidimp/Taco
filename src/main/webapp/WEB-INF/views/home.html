@@ -21,7 +21,10 @@
             <th:block th:each="taco : ${standardTacos}">
 
                 <span th:text="${taco.getName()}"></span>
-
+                <th:block th:each="ingredient : ${taco.getIngredients()}">
+<!--                    <th:block th:if="${ingredient.getTacoId() == taco.getId()}" th:text="${ingredient.getIngredientName()}"></th:block>-->
+                    <th:block th:text="${ingredient.getName()}"></th:block>
+                </th:block>
                 <br>
 
             </th:block>

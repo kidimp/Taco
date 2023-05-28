@@ -37,10 +37,15 @@ public class Taco {
     private boolean active;
 
     @ManyToMany()
-    @JoinTable(
+    /*@JoinTable(
             name = "taco_ingredients",
             joinColumns = @JoinColumn(name = "taco_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )*/
+    @JoinTable(
+            name = "taco_ingredients",
+            joinColumns = @JoinColumn(name = "taco_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id")
     )
     @Size(min = 1, message = "You must choose at least 1 ingredient")
     private Set<Ingredient> ingredients;

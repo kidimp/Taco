@@ -1,6 +1,7 @@
 package org.chous.taco.dao;
 
 import org.chous.taco.models.Taco;
+import org.chous.taco.models.TacoIngredient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -61,13 +62,23 @@ public class TacoDAO {
                 taco_id, ingredient_id);
     }
 
-/** FIX it!
+
     public List<Integer> getIngredientsId(int taco_id) {
-        return jdbcTemplate.query("SELECT * FROM taco_ingredients WHERE taco_id=?", new Object[]{taco_id},
+        /*return jdbcTemplate.query("SELECT * FROM taco_ingredients WHERE taco_id=?", new Object[]{taco_id},
+                new BeanPropertyRowMapper<>(Integer.class));*/
+        return jdbcTemplate.query("SELECT * FROM taco INNER JOIN ingredients ON taco_id=?", new Object[]{taco_id},
                 new BeanPropertyRowMapper<>(Integer.class));
     }
- **/
 
+    public List<TacoIngredient> getIngredientsTaco() {
+        return jdbcTemplate.query("SELECT taco.id as taco_id, ingredient.name as INGREDIENT_NAME " +
+                        "FROM taco_ingredients as ti " +
+                        "JOIN ingredient ON ingredient.id = ti.ingredient_id " +
+                        "JOIN taco ON taco.id = ti.taco_id " +
+                        "WHERE taco.custom = 0 " +
+                        "ORDER BY taco.id",
+                new BeanPropertyRowMapper<>(TacoIngredient.class));
+    }
 
     public void update(int id, Taco updatedTaco) {
         jdbcTemplate.update("UPDATE taco SET name=?, size=?, weight=?, calories=?, protein=?, fat=?, carbs=?, price=?, " +

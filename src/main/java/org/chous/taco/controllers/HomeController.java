@@ -5,6 +5,8 @@ import org.chous.taco.dao.TacoDAO;
 import org.chous.taco.models.Ingredient;
 import org.chous.taco.models.Purchase;
 import org.chous.taco.models.Taco;
+import org.chous.taco.models.TacoIngredient;
+import org.chous.taco.repositories.TacoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 @Controller
 public class HomeController {
 
+    private final TacoRepository tacoRepository;
     private final IngredientDAO ingredientDAO;
     private final TacoDAO tacoDAO;
 
@@ -34,7 +37,8 @@ public class HomeController {
 
 
     @Autowired
-    public HomeController(IngredientDAO ingredientDAO, TacoDAO tacoDAO) {
+    public HomeController(TacoRepository tacoRepository, IngredientDAO ingredientDAO, TacoDAO tacoDAO) {
+        this.tacoRepository = tacoRepository;
         this.ingredientDAO = ingredientDAO;
         this.tacoDAO = tacoDAO;
     }
@@ -42,18 +46,19 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        List<Taco> standardTacos = tacoDAO.tacos();
+        List<Taco> standardTacos = tacoRepository.findTacoByCustom(false);//tacoDAO.tacos();
 
-        /** FIX it!
-         for (Taco taco : standardTacos) {
-         List<Integer> ingredsIds = tacoDAO.getIngredientsId(taco.getId());
-         System.out.println("hello");
+        //List<TacoIngredient> ingredientsTaco = tacoDAO.getIngredientsTaco();
 
-         taco.setIngredients();
-         }
-         **/
+         /*for (Taco taco : standardTacos) {
+             List<Integer> ingredsIds = tacoDAO.getIngredientsId(taco.getId());
+             System.out.println("hello");
+
+         //taco.setIngredients();
+         }*/
 
         model.addAttribute("standardTacos", standardTacos);
+        //model.addAttribute("ingredientsTaco", ingredientsTaco);
 
         return "home";
     }
