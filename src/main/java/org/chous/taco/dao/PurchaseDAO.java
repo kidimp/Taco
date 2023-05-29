@@ -1,4 +1,4 @@
-package org.chous.taco.dao;
-
-public class PurchaseDAO {
-}
+//package org.chous.taco.dao;
+//
+//public class PurchaseDAO {
+//}

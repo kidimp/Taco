@@ -1,11 +1,9 @@
 package org.chous.taco.controllers;
 
-import org.chous.taco.dao.IngredientDAO;
-import org.chous.taco.dao.TacoDAO;
 import org.chous.taco.models.Ingredient;
 import org.chous.taco.models.Purchase;
 import org.chous.taco.models.Taco;
-import org.chous.taco.models.TacoIngredient;
+import org.chous.taco.repositories.IngredientRepository;
 import org.chous.taco.repositories.TacoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,15 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
 
     private final TacoRepository tacoRepository;
-    private final IngredientDAO ingredientDAO;
-    private final TacoDAO tacoDAO;
+    private final IngredientRepository ingredientRepository;
 
     private int weight = 0;
     private int calories = 0;
@@ -37,10 +33,9 @@ public class HomeController {
 
 
     @Autowired
-    public HomeController(TacoRepository tacoRepository, IngredientDAO ingredientDAO, TacoDAO tacoDAO) {
+    public HomeController(TacoRepository tacoRepository, IngredientRepository ingredientRepository) {
         this.tacoRepository = tacoRepository;
-        this.ingredientDAO = ingredientDAO;
-        this.tacoDAO = tacoDAO;
+        this.ingredientRepository = ingredientRepository;
     }
 
 
@@ -48,17 +43,7 @@ public class HomeController {
     public String home(Model model) {
         List<Taco> standardTacos = tacoRepository.findTacoByCustom(false);//tacoDAO.tacos();
 
-        //List<TacoIngredient> ingredientsTaco = tacoDAO.getIngredientsTaco();
-
-         /*for (Taco taco : standardTacos) {
-             List<Integer> ingredsIds = tacoDAO.getIngredientsId(taco.getId());
-             System.out.println("hello");
-
-         //taco.setIngredients();
-         }*/
-
         model.addAttribute("standardTacos", standardTacos);
-        //model.addAttribute("ingredientsTaco", ingredientsTaco);
 
         return "home";
     }
@@ -67,7 +52,7 @@ public class HomeController {
     // Передаём на view списки ингредиентов, распределённые по типам (Type).
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
-        List<Ingredient> ingredients = ingredientDAO.ingredients();
+        List<Ingredient> ingredients = ingredientRepository.findAll();
         Ingredient.Type[] types = Ingredient.Type.values();
         for (Ingredient.Type type : types) {
             model.addAttribute(type.toString().toLowerCase(), filterByType(ingredients, type));
@@ -98,7 +83,7 @@ public class HomeController {
         // Из view в моделе Taco taco (@ModelAttribute("newCustomTaco")) пришла информация о всех ингридеентах
         // текущего кастомного тако. Сохраняем эти ингридиенты в список и при помощи сеттера записываем этот список в
         // объект тако.
-        Set<Ingredient> ingredientsForCurrentTaco = taco.getIngredients();
+        List<Ingredient> ingredientsForCurrentTaco = taco.getIngredients();
         taco.setIngredients(ingredientsForCurrentTaco);
 
         // Пробегаемся по списку ингредиентов для текущего кастомного тако и узнаём суммарные значения нужных нам полей.
@@ -128,18 +113,9 @@ public class HomeController {
 
         // Сохраняем заполненый объект тако в базу данных. Объект сохранился последним в таблице и после сохранения
         // автоматически получил свой уникальный id.
-        tacoDAO.save(taco);
+        tacoRepository.save(taco);
 
-        // Находим id текущего кастомного тако (на данный момент последний в соответствующей теблице базы данных).
-        int taco_id = tacoDAO.getLastRecordId();
-
-        // Ещё раз пробегаемся по всем ингредиентам текущего кастомного тако и записываем каждый из них
-        // в таблицу базы данных, в которой для каждого тако хранятся все его ингредиенты.
-        for (Ingredient i : ingredientsForCurrentTaco) {
-            tacoDAO.saveIngredients(taco_id, i.getId());
-        }
-
-        // Очищаем значения полей.
+        // Очищаем значения полей, чтобы можно было создать еўё одно тако с нуля.
         clean();
 
         return "redirect:/cart";
@@ -159,7 +135,7 @@ public class HomeController {
     @GetMapping("/cart")
     public String cart(Model model, @ModelAttribute("purchase") Purchase purchase) {
 
-        List<Taco> activeTacos = tacoDAO.getActiveTacos();
+        List<Taco> activeTacos = tacoRepository.findTacoByActive(true);
         BigDecimal totalPrise = new BigDecimal("0.0");
 
         for (Taco taco : activeTacos) {
@@ -180,10 +156,11 @@ public class HomeController {
             return "cart";
         }
 
-        List<Taco> activeTacos = tacoDAO.getActiveTacos();
+        List<Taco> activeTacos = tacoRepository.findTacoByActive(true);
+
         for (Taco taco : activeTacos) {
             taco.setActive(false);
-            tacoDAO.update(taco.getId(), taco);
+            tacoRepository.save(taco);
         }
 
         return "redirect:/done";
@@ -194,6 +171,5 @@ public class HomeController {
     public String done() {
         return "done";
     }
-
 
 }

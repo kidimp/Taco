@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface TacoRepository extends CrudRepository<Taco, Integer> {
     List<Taco> findTacoByCustom(boolean custom);
+    List<Taco> findTacoByActive(boolean active);
 }

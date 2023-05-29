@@ -2,9 +2,9 @@ use taco_app;
 
 insert ingredient(name, type, img_path, weight, calories, protein, fat, carbs, price)
 values
-('Пшеничная', 0, '/images/ingredients/wrap/wheat.png', 32, 109, 2, 5, 13, 2.0),
-('Ржаная', 0, '/images/ingredients/wrap/rye.png', 38, 143, 3, 7, 17, 2.0),
-('Сырная', 0, '/images/ingredients/wrap/cheese.png', 35, 124, 7, 10, 2, 2.5),
+('Пшеничная лепёшка', 0, '/images/ingredients/wrap/wheat.png', 32, 109, 2, 5, 13, 2.0),
+('Ржаная лепёшка', 0, '/images/ingredients/wrap/rye.png', 38, 143, 3, 7, 17, 2.0),
+('Сырная лепёшка', 0, '/images/ingredients/wrap/cheese.png', 35, 124, 7, 10, 2, 2.5),
 
 ('Курица', 1, '/images/ingredients/protein/chicken.png', 74, 103, 13, 6, 0, 2.5),
 ('Свинина', 1, '/images/ingredients/protein/beef.png', 76, 245, 6, 25, 0, 3.0),
@@ -28,26 +28,26 @@ values
 ('Гуакомолле', 2, 'img_path', 42, 51, 1, 3, 5, 2.0),
 ('Песто', 2, 'img_path', 42, 136, 2, 14, 2, 2.0),
 
-('Сыр чеддар', 3, 'img_path', 41, 118, 7, 10, 0, 1.5),
+('Чеддар', 3, 'img_path', 41, 118, 7, 10, 0, 1.5),
 ('Моцарелла', 3, 'img_path', 41, 73, 6, 5, 0, 1.5),
 ('Смесь сыров', 3, 'img_path', 41, 107, 8, 8, 1, 1.5);
 
 insert ingredient(name, type, img_path, weight, calories, protein, fat, carbs, price)
 values
-('Альфредо', 4, '/images/ingredients/sause/alfredo.png', 17, 49, 1, 5, 0, 0.5),
-('Барбекю', 4, '/images/ingredients/sause/barbecue.png', 17, 20, 0, 0, 5, 0.5),
-('Горчичный', 4, '/images/ingredients/sause/mustard.png', 17, 27, 0, 2, 1, 0.5),
-('Грибной', 4, '/images/ingredients/sause/mushroom.png', 17, 10, 0, 1, 1, 0.5),
-('Карри', 4, '/images/ingredients/sause/curry.png', 17, 32, 0, 3, 2, 0.5),
-('Кетчуп', 4, '/images/ingredients/sause/ketchup.png', 17, 12, 0, 0, 3, 0.5),
-('Кисло-сладкий', 4, '/images/ingredients/sause/sweet-and-sour.png', 17, 20, 0, 0, 5, 0.5),
-('Маринара', 4, '/images/ingredients/sause/marinara.png', 17, 9, 0, 0, 1, 0.5),
-('Ранч', 4, '/images/ingredients/sause/ranch.png', 17, 58, 0, 6, 1, 0.5),
-('Сальса', 4, '/images/ingredients/sause/salsa.png', 17, 9, 0, 0, 1, 0.5),
-('Сырный', 4, '/images/ingredients/sause/cheese.png', 17, 43, 0, 4, 1, 0.5),
-('Тартар', 4, '/images/ingredients/sause/tartar.png', 17, 56, 0, 6, 1, 0.5),
-('Терияки', 4, '/images/ingredients/sause/teriyaki.png', 17, 11, 1, 0, 2, 0.5),
-('Чили', 4, '/images/ingredients/sause/chili.png', 17, 14, 0, 0, 4, 0.5);
+('Соус альфредо', 4, '/images/ingredients/sause/alfredo.png', 17, 49, 1, 5, 0, 0.5),
+('Соус барбекю', 4, '/images/ingredients/sause/barbecue.png', 17, 20, 0, 0, 5, 0.5),
+('Соус горчичный', 4, '/images/ingredients/sause/mustard.png', 17, 27, 0, 2, 1, 0.5),
+('Соус грибной', 4, '/images/ingredients/sause/mushroom.png', 17, 10, 0, 1, 1, 0.5),
+('Соус карри', 4, '/images/ingredients/sause/curry.png', 17, 32, 0, 3, 2, 0.5),
+('Соус кетчуп', 4, '/images/ingredients/sause/ketchup.png', 17, 12, 0, 0, 3, 0.5),
+('Соус кисло-сладкий', 4, '/images/ingredients/sause/sweet-and-sour.png', 17, 20, 0, 0, 5, 0.5),
+('Соус маринара', 4, '/images/ingredients/sause/marinara.png', 17, 9, 0, 0, 1, 0.5),
+('Соус ранч', 4, '/images/ingredients/sause/ranch.png', 17, 58, 0, 6, 1, 0.5),
+('Соус сальса', 4, '/images/ingredients/sause/salsa.png', 17, 9, 0, 0, 1, 0.5),
+('Соус сырный', 4, '/images/ingredients/sause/cheese.png', 17, 43, 0, 4, 1, 0.5),
+('Соус тартар', 4, '/images/ingredients/sause/tartar.png', 17, 56, 0, 6, 1, 0.5),
+('Соус терияки', 4, '/images/ingredients/sause/teriyaki.png', 17, 11, 1, 0, 2, 0.5),
+('Соус чили', 4, '/images/ingredients/sause/chili.png', 17, 14, 0, 0, 4, 0.5);
 
 
 insert taco(name, size, weight, calories, protein, fat, carbs, price, custom, active)
