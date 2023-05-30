@@ -17,16 +17,19 @@
 
         <br><br>
 
-        <h5>Оформление заказа</h5>
+        <span style="font-size: 28px;line-height: 1.1;font-family:'ALS Malina';color: #ff5200;">Оформление заказа</span>
 
-        Ваш заказ
+        <br><br>
 
-        <br>
+        <span style="font-size: 20px;line-height: 1.1;font-family:'ALS Malina';color: #000000;">Ваш заказ</span>
+
+        <br><br>
 
         <div>
             <th:block th:each="taco : ${activeTacos}">
 
-                <span th:text="${taco.getName()} + ' ' + ${taco.getPrice()} + ' byn'" style="text-align: center"></span>
+                <span th:text="${taco.getName()} + ' ' + ${taco.getPrice()} + ' byn'" style="font-size: 15px;font-family:'Helvetica';color: #999999;"></span>
+
                 <br>
 
             </th:block>
@@ -34,27 +37,30 @@
 
         <br>
 
-        <span th:text="'Итого: ' + ${totalPrise} + ' byn'" style="text-align: center"></span>
+        <span th:text="'Итого: ' + ${totalPrise} + ' byn'" style="font-size: 28px;line-height: 1.1;font-family:'ALS Malina';color: #000000;"></span>
 
         <br><br>
 
-        <h5>Адрес доставки</h5>
+        <span style="font-size: 28px;line-height: 1.1;font-family:'ALS Malina';color: #ff5200;">Адрес доставки</span>
 
-        <label for="deliveryName">Ваше имя: </label>
-        <input type="text" th:field="*{deliveryName}" id="deliveryName"/>
+        <br><br>
+
+        <label for="deliveryName" style="font-size: 15px;font-family:'Helvetica';color: #999999;">Ваше имя: </label>
+        <br>
+        <input type="text" th:field="*{deliveryName}" id="deliveryName" size="24"/>
         <div style="color:red" th:if="${#fields.hasErrors('deliveryName')}" th:errors="*{deliveryName}">Name Error</div>
 
         <br><br>
 
-        <label for="deliveryStreet">Улица: </label>
-        <input type="text" th:field="*{deliveryStreet}" id="deliveryStreet"/>
+        <label for="deliveryStreet" style="font-size: 15px;font-family:'Helvetica';color: #999999;">Улица: </label>
+        <br>
+        <input type="text" th:field="*{deliveryStreet}" id="deliveryStreet" size="24"/>
         <div style="color:red" th:if="${#fields.hasErrors('deliveryStreet')}" th:errors="*{deliveryStreet}">Street Error</div>
         <br/>
 
-        <br>
-        <br>
+        <br><br>
 
-        <input type="submit" value="Заказать!"/>
+        <input type="submit" value="Заказать!" style="font-size: 20px;line-height: 1.1;font-family:'ALS Malina';color: #ff5200;background:#e9e9e9;border-width:0;padding: 7px 12px 8px; margin: 0;min-height: 37px;min-width:100px;border-radius: 11px;background-clip: padding-box;"/>
 
         <br>
         <br>

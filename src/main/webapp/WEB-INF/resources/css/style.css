@@ -15,3 +15,13 @@
     width: 13.93%;
     vertical-align: top;
 }
+
+.standard_tacos_list {
+    width: 100%;
+}
+
+.taco_items {
+    display: inline-block;
+    width: 33%;
+    vertical-align: top;
+}

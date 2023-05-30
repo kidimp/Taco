@@ -41,12 +41,27 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        List<Taco> standardTacos = tacoRepository.findTacoByCustom(false);//tacoDAO.tacos();
+        List<Taco> standardTacos = tacoRepository.findTacoByCustom(false);
 
         model.addAttribute("standardTacos", standardTacos);
 
         return "home";
     }
+
+/** FIX IT
+ *
+ * Сделать переход в корзину и добавление тако в заказ при нажатии на главной странице кнопки "В корзину"
+ *
+    @PostMapping("/")
+    public String home(@ModelAttribute("newStandardTaco") @Valid Taco taco, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "redirect:/home";
+        }
+
+        return "redirect:/cart";
+    }
+**/
 
 
     // Передаём на view списки ингредиентов, распределённые по типам (Type).
