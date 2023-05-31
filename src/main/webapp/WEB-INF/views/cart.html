@@ -17,18 +17,19 @@
 
         <br><br>
 
-        <span style="font-size: 28px;line-height: 1.1;font-family:'ALS Malina';color: #ff5200;">Оформление заказа</span>
+        <span class="malina_28px_orange">Оформление заказа</span>
 
         <br><br>
 
-        <span style="font-size: 20px;line-height: 1.1;font-family:'ALS Malina';color: #000000;">Ваш заказ</span>
+        <span class="malina_20px_black">Ваш заказ</span>
 
         <br><br>
 
         <div>
             <th:block th:each="taco : ${activeTacos}">
 
-                <span th:text="${taco.getName()} + ' ' + ${taco.getPrice()} + ' byn'" style="font-size: 15px;font-family:'Helvetica';color: #999999;"></span>
+                <span th:text="${taco.getName()} + ' ' + ${taco.getPrice()} + ' byn'"
+                      class="helvetica_15px_darkgray"></span>
 
                 <br>
 
@@ -37,34 +38,107 @@
 
         <br>
 
-        <span th:text="'Итого: ' + ${totalPrise} + ' byn'" style="font-size: 28px;line-height: 1.1;font-family:'ALS Malina';color: #000000;"></span>
+        <span th:text="'Итого: ' + ${totalPrise} + ' byn'" class="malina_28px_black"></span>
 
         <br><br>
 
-        <span style="font-size: 28px;line-height: 1.1;font-family:'ALS Malina';color: #ff5200;">Адрес доставки</span>
+        <span class="malina_28px_orange">Адрес доставки</span>
 
         <br><br>
 
-        <label for="deliveryName" style="font-size: 15px;font-family:'Helvetica';color: #999999;">Ваше имя: </label>
+        <label for="deliveryName" class="helvetica_15px_darkgray">Ваше имя </label>
         <br>
         <input type="text" th:field="*{deliveryName}" id="deliveryName" size="24"/>
-        <div style="color:red" th:if="${#fields.hasErrors('deliveryName')}" th:errors="*{deliveryName}">Name Error</div>
+        <div style="color:red" th:if="${#fields.hasErrors('deliveryName')}" th:errors="*{deliveryName}">Delivery name
+            Error
+        </div>
 
         <br><br>
 
-        <label for="deliveryStreet" style="font-size: 15px;font-family:'Helvetica';color: #999999;">Улица: </label>
+        <label for="deliveryPhoneNumber" class="helvetica_15px_darkgray">Ваш мобильный телефон </label>
         <br>
-        <input type="text" th:field="*{deliveryStreet}" id="deliveryStreet" size="24"/>
-        <div style="color:red" th:if="${#fields.hasErrors('deliveryStreet')}" th:errors="*{deliveryStreet}">Street Error</div>
-        <br/>
+        <input type="text" th:field="*{deliveryPhoneNumber}" id="deliveryPhoneNumber" size="24"/>
+        <div style="color:red" th:if="${#fields.hasErrors('deliveryPhoneNumber')}" th:errors="*{deliveryPhoneNumber}">Delivery phone number Error</div>
 
         <br><br>
 
-        <input type="submit" value="Заказать!" style="font-size: 20px;line-height: 1.1;font-family:'ALS Malina';color: #ff5200;background:#e9e9e9;border-width:0;padding: 7px 12px 8px; margin: 0;min-height: 37px;min-width:100px;border-radius: 11px;background-clip: padding-box;"/>
+        <ul class="delivery_address">
+            <li class="delivery_address_items">
+                <label for="deliveryStreet" class="helvetica_15px_darkgray">Улица </label>
+                <br>
+                <input type="text" th:field="*{deliveryStreet}" id="deliveryStreet" size="24"/>
+                <div style="color:red" th:if="${#fields.hasErrors('deliveryStreet')}" th:errors="*{deliveryStreet}">Delivery street Error</div>
+            </li>
+            <li class="delivery_address_items">
+                <label for="deliveryStreet" class="helvetica_15px_darkgray">Дом </label>
+                <br>
+                <input type="text" th:field="*{deliveryBuilding}" id="deliveryBuilding" size="6"/>
+                <div style="color:red" th:if="${#fields.hasErrors('deliveryBuilding')}" th:errors="*{deliveryBuilding}">Delivery building Error</div>
+            </li>
+            <li class="delivery_address_items">
+                <label for="deliveryEntrance" class="helvetica_15px_darkgray">Подъезд </label>
+                <br>
+                <input type="text" th:field="*{deliveryEntrance}" id="deliveryEntrance" size="6"/>
+                <div style="color:red" th:if="${#fields.hasErrors('deliveryEntrance')}" th:errors="*{deliveryEntrance}">Delivery entrance Error</div>
+            </li>
+            <li class="delivery_address_items">
+                <label for="deliveryFloor" class="helvetica_15px_darkgray">Этаж </label>
+                <br>
+                <input type="text" th:field="*{deliveryFloor}" id="deliveryFloor" size="6"/>
+                <div style="color:red" th:if="${#fields.hasErrors('deliveryFloor')}" th:errors="*{deliveryFloor}">Delivery floor Error</div>
+            </li>
+            <li class="delivery_address_items">
+                <label for="deliveryApartment" class="helvetica_15px_darkgray">Квартира </label>
+                <br>
+                <input type="text" th:field="*{deliveryApartment}" id="deliveryApartment" size="6"/>
+                <div style="color:red" th:if="${#fields.hasErrors('deliveryApartment')}" th:errors="*{deliveryApartment}">Delivery apartment Error</div>
+            </li>
+        </ul>
+
+        <br>
+
+        <label for="deliveryComment" class="helvetica_15px_darkgray">Комментарий к заказу </label>
+        <br>
+        <input type="text" th:field="*{deliveryComment}" id="deliveryComment" size="83"/>
+        <div style="color:red" th:if="${#fields.hasErrors('deliveryComment')}" th:errors="*{deliveryComment}">Delivery Comment Error</div>
 
         <br>
         <br>
 
+        <label for="deliveryTime" class="helvetica_15px_darkgray">Время заказа </label>
+        <br>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="withinTime" />
+            <label class="form-check-label" for="withinTime" style="font-size: 15px;font-family:'Helvetica';color: #999999;">В течение 45 минут</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="reservation" />
+            <label class="form-check-label" for="reservation" style="font-size: 15px;font-family:'Helvetica';color: #999999;">Предварительный заказ</label>
+        </div>
+
+        <br>
+        <br>
+
+        <label for="paymentMethod" class="helvetica_15px_darkgray">Способ оплаты </label>
+        <br>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="onSite" />
+            <label class="form-check-label" for="onSite" style="font-size: 15px;font-family:'Helvetica';color: #999999;">На месте</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="byCard" />
+            <label class="form-check-label" for="byCard" style="font-size: 15px;font-family:'Helvetica';color: #999999;">Картой онлайн</label>
+        </div>
+
+        <br><br>
+
+        <span th:text="'Итого: ' + ${totalPrise} + ' byn'" class="malina_28px_black"></span>
+
+        <br><br>
+
+        <input type="submit" value="Заказать!" class="submit_button_malina_20px_orange_lightgray"/>
+
+        <br><br>
 
     </form>
 

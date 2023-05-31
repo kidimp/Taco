@@ -1,7 +1,6 @@
 package org.chous.taco.repositories;
 
 import org.chous.taco.models.Ingredient;
-import org.chous.taco.models.Taco;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

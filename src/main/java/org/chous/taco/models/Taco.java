@@ -22,7 +22,7 @@ public class Taco {
     @NotEmpty(message = "Name must not be empty")
     @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
     private String name;
-    private double size;
+    private double size = 1;
     private int weight;
     private int calories;
     private int protein;
