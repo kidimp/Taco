@@ -99,7 +99,7 @@
 
         <label for="deliveryComment" class="helvetica_15px_darkgray">Комментарий к заказу </label>
         <br>
-        <input type="text" th:field="*{deliveryComment}" id="deliveryComment" size="83"/>
+        <input type="text" th:field="*{deliveryComment}" id="deliveryComment" size="83" required/>
         <div style="color:red" th:if="${#fields.hasErrors('deliveryComment')}" th:errors="*{deliveryComment}">Delivery Comment Error</div>
 
         <br>

@@ -60,6 +60,8 @@ public class PurchaseController {
             tacoRepository.save(taco);
         }
 
+        purchase.setTacos(activeTacos);
+
         purchaseRepository.save(purchase);
 
         return "redirect:/done";

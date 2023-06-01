@@ -23,7 +23,7 @@ public class HomeController {
 
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, @ModelAttribute("tacoToBeAdded") Taco taco) {
         // Получаем все стандартные (не кастомные) тако из базы данных.
         List<Taco> standardTacosUnsorted = tacoRepository.findTacoByCustom(false);
 
@@ -44,9 +44,10 @@ public class HomeController {
 
 
     @PostMapping("/")
-    public String home(@ModelAttribute("newStandardTaco") Taco taco) {
+    public String home(@RequestParam(value="tacoToAdd") Taco tacoToAdd) {
 
-        System.out.println();
+        tacoToAdd.setActive(true);
+        tacoRepository.save(tacoToAdd);
 
         return "redirect:/cart";
     }
