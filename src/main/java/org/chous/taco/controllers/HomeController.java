@@ -1,12 +1,15 @@
 package org.chous.taco.controllers;
 
+import org.chous.taco.models.Purchase;
 import org.chous.taco.models.Taco;
-import org.chous.taco.repositories.TacoRepository;
+import org.chous.taco.repositories.TacosRepository;
+import org.chous.taco.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,16 +17,21 @@ import java.util.stream.Collectors;
 @Controller
 public class HomeController {
 
-    private final TacoRepository tacoRepository;
+    private final TacosRepository tacoRepository;
 
     @Autowired
-    public HomeController(TacoRepository tacoRepository) {
+    public HomeController(TacosRepository tacoRepository) {
         this.tacoRepository = tacoRepository;
     }
 
 
     @GetMapping("/")
     public String home(Model model, @ModelAttribute("tacoToBeAdded") Taco taco) {
+
+        // Получаем информацию, в какой роли (anonymous, user, admin) пользователь зашёл на страницу.
+        // Это нужно для корректного отображения хедера.
+        UserService.getCurrentPrincipalUserRole(model);
+
         // Получаем все стандартные (не кастомные) тако из базы данных.
         List<Taco> standardTacosUnsorted = tacoRepository.findTacoByCustom(false);
 
@@ -50,6 +58,13 @@ public class HomeController {
         tacoRepository.save(tacoToAdd);
 
         return "redirect:/cart";
+    }
+
+
+    @GetMapping("/page-under-construction")
+    public String pageUnderConstruction() {
+
+        return "page-under-construction";
     }
 
 }

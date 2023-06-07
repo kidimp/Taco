@@ -2,8 +2,8 @@ package org.chous.taco.controllers;
 
 import org.chous.taco.models.Ingredient;
 import org.chous.taco.models.Taco;
-import org.chous.taco.repositories.IngredientRepository;
-import org.chous.taco.repositories.TacoRepository;
+import org.chous.taco.repositories.IngredientsRepository;
+import org.chous.taco.repositories.TacosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @Controller
 public class NewCustomTacoController {
 
-    private final TacoRepository tacoRepository;
-    private final IngredientRepository ingredientRepository;
+    private final TacosRepository tacoRepository;
+    private final IngredientsRepository ingredientRepository;
 
     private int weight = 0;
     private int calories = 0;
@@ -32,7 +32,7 @@ public class NewCustomTacoController {
 
 
     @Autowired
-    public NewCustomTacoController(TacoRepository tacoRepository, IngredientRepository ingredientRepository) {
+    public NewCustomTacoController(TacosRepository tacoRepository, IngredientsRepository ingredientRepository) {
         this.tacoRepository = tacoRepository;
         this.ingredientRepository = ingredientRepository;
     }

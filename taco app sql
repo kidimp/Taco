@@ -332,3 +332,10 @@ values
 (30, 24),
 (30, 34),
 (30, 38);
+
+
+use taco_app;
+insert user(email, is_active, password, role, username)
+values
+('a@a.a', 1, 123, 'ROLE_ADMIN', 'Anne'),
+('q@q.q', 1, 123, 'ROLE_USER', 'Chous');

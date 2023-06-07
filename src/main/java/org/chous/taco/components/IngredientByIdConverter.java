@@ -1,7 +1,7 @@
-package org.chous.taco.services;
+package org.chous.taco.components;
 
 import org.chous.taco.models.Ingredient;
-import org.chous.taco.repositories.IngredientRepository;
+import org.chous.taco.repositories.IngredientsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class IngredientByIdConverter implements Converter<Integer, Ingredient>  {
 
-    private final IngredientRepository ingredientRepo;
+    private final IngredientsRepository ingredientRepo;
 
     @Autowired
-    public IngredientByIdConverter(IngredientRepository ingredientRepo) {
+    public IngredientByIdConverter(IngredientsRepository ingredientRepo) {
         this.ingredientRepo = ingredientRepo;
     }
 

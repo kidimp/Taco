@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Reset password</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<header th:insert="fragments/headerAnonymous :: header"></header>
+
+<div class="container mt-5">
+
+  <br><br>
+
+  <h5>Password reset link have been sent</h5>
+  Password reset link have been sent to <a th:text="${user.getEmail()}"></a>.
+  Please set the new password from the link.
+
+</div>
+
+</body>
+</html>

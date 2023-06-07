@@ -2,8 +2,8 @@ package org.chous.taco.controllers;
 
 import org.chous.taco.models.Purchase;
 import org.chous.taco.models.Taco;
-import org.chous.taco.repositories.PurchaseRepository;
-import org.chous.taco.repositories.TacoRepository;
+import org.chous.taco.repositories.PurchasesRepository;
+import org.chous.taco.repositories.TacosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,11 +19,11 @@ import java.util.List;
 @Controller
 public class PurchaseController {
 
-    private final TacoRepository tacoRepository;
-    private final PurchaseRepository purchaseRepository;
+    private final TacosRepository tacoRepository;
+    private final PurchasesRepository purchaseRepository;
 
     @Autowired
-    public PurchaseController(TacoRepository tacoRepository, PurchaseRepository purchaseRepository) {
+    public PurchaseController(TacosRepository tacoRepository, PurchasesRepository purchaseRepository) {
         this.tacoRepository = tacoRepository;
         this.purchaseRepository = purchaseRepository;
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -10,7 +10,13 @@
 
 <body>
 
-<header th:insert="fragments/header :: header"></header>
+<header>
+    <div sec:authorize="!isAuthenticated()" th:insert="fragments/headerAnonymous :: header"></div>
+
+    <div sec:authorize="hasRole('ROLE_USER')" th:insert="fragments/headerUser :: header"></div>
+
+    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/headerAdmin :: header"></div>
+</header>
 
 <div class="container mt-5">
 

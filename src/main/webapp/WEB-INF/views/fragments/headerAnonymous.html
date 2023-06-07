@@ -35,24 +35,18 @@
                         <a class="nav-link active" aria-current="page" style="text-align: center;font-size: 20px;line-height: 1.1;font-family:'ALS Malina';" href="/cart">Корзина</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" style="text-align: center;font-size: 20px;line-height: 1.1;font-family:'ALS Malina';" href="/">Личный кабинет</a>
+                        <a class="nav-link active" aria-current="page" style="text-align: center;font-size: 20px;line-height: 1.1;font-family:'ALS Malina';" href="/page-under-construction">Личный кабинет</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" style="text-align: center;font-size: 20px;line-height: 1.1;font-family:'ALS Malina';" href="/">Статистика</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" style="text-align: center;font-size: 20px;line-height: 1.1;font-family:'ALS Malina';" href="/">Админ</a>
+                        <a class="nav-link active" aria-current="page" style="text-align: center;font-size: 20px;line-height: 1.1;font-family:'ALS Malina';" href="/page-under-construction">Статистика</a>
                     </li>
 
                 </ul>
 
             </div>
 
-            <!--            <div class="nav-link active" sec:authorize="isAuthenticated()"><a sec:authentication="name"></a></div>-->
             <div class="text-end">
-                <form th:action="@{/logout}" method="POST" class="btn btn-warning me-4">
-                    <input type="submit" value="Log out" class="button_a" style="text-align: center;font-size: 16px;line-height: 1.1;font-family:'ALS Malina';color: white"/>
-                </form>
+                <a th:href="@{/login}" class="btn btn-warning me-4" style="min-width: 100px">Log in</a>
             </div>
 
         </div>

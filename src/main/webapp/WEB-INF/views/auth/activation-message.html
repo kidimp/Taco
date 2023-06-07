@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Activation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<header th:insert="fragments/headerAnonymous :: header"></header>
+
+<div class="container mt-5">
+
+    <br><br>
+
+    <span class="malina_28px_orange">Activation link have been sent</span>
+    <br>
+    <span class="helvetica_15px_darkgray">Activation link have been sent to <a th:text="${user.getEmail()}"></a></span>
+    <span class="helvetica_15px_darkgray">To start ordering tacos, please activate you
+        account from the link.</span>
+
+</div>
+
+
+</body>
+</html>

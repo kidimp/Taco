@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<header th:insert="fragments/headerAnonymous :: header"></header>
+
+
+<div class="container mt-5">
+
+    <br><br>
+
+    <form name="f" method="post" action="/process_login">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Email :</label>
+            <div class="col-sm-6">
+                <label>
+                    <input type="text" name="email" id="email" class="form-control" placeholder="example@list.com"/>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Password :</label>
+            <div class="col-sm-6">
+                <label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="password"/>
+                </label>
+            </div>
+        </div>
+
+        <input type="submit" value="Log in with Email"/>
+
+
+        <br/>
+
+        <div th:if="${param.error}" style="color: red">
+            Wrong email or password
+        </div>
+
+    </form>
+
+    <br/>
+
+    <a href="/reset-password">Forgot Password</a>
+
+    <br/>
+
+    <br/>
+
+    Do not have an account?
+
+    <br/>
+
+    <a href="/registration">Create account</a>
+
+    <br/>
+
+
+</div>
+
+</body>
+</html>
