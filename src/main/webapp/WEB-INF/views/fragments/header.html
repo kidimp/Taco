@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
@@ -30,28 +31,40 @@
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
 
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" style="text-align: center;font-size: 20px;line-height: 1.1;font-family:'ALS Malina';" href="/">На главную</a>
+                        <a class="malina_20px_black nav-link active" aria-current="page" href="/">На главную</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" style="text-align: center;font-size: 20px;line-height: 1.1;font-family:'ALS Malina';" href="/cart">Корзина</a>
+                        <a class="malina_20px_white nav-link active" aria-current="page" href="/cart">Корзина</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" style="text-align: center;font-size: 20px;line-height: 1.1;font-family:'ALS Malina';" href="/page-under-construction">Личный кабинет</a>
+                        <a class="malina_20px_white nav-link active" aria-current="page" href="/page-under-construction">Личный кабинет</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" style="text-align: center;font-size: 20px;line-height: 1.1;font-family:'ALS Malina';" href="/page-under-construction">Статистика</a>
+                        <a class="malina_20px_white nav-link active" aria-current="page" href="/page-under-construction">Статистика</a>
                     </li>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <li class="nav-item">
+                            <a class="malina_20px_white nav-link active" aria-current="page" href="/page-under-construction">Админ</a>
+                        </li>
+                    </div>
 
                 </ul>
 
             </div>
 
-            <div class="nav-link active" sec:authorize="isAuthenticated()"><a sec:authentication="name"></a></div>
-            <div class="text-end">
+            <div class="malina_20px_white nav-link active" sec:authorize="isAuthenticated()">
+                <a sec:authentication="name"></a>
+            </div>
+
+            <div class="text-end" sec:authorize="isAuthenticated()">
                 <form th:action="@{/logout}" method="POST" class="btn btn-warning me-4">
-                    <input type="submit" value="Log out" class="button_a" style="text-align: center;font-size: 16px;line-height: 1.1;font-family:'ALS Malina';color: white"/>
+                    <input type="submit" value="Log out" class="button_a"/>
                 </form>
             </div>
+            <div class="text-end" sec:authorize="!isAuthenticated()">
+                <a th:href="@{/login}" class="button_b btn btn-warning me-4" style="color: white">Log in</a>
+            </div>
+
 
         </div>
 

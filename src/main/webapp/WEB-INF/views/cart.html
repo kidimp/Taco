@@ -11,11 +11,7 @@
 <body>
 
 <header>
-    <div sec:authorize="!isAuthenticated()" th:insert="fragments/headerAnonymous :: header"></div>
-
-    <div sec:authorize="hasRole('ROLE_USER')" th:insert="fragments/headerUser :: header"></div>
-
-    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/headerAdmin :: header"></div>
+    <div th:insert="fragments/header :: header"></div>
 </header>
 
 <div class="container mt-5">

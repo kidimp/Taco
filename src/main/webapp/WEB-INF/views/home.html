@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <meta charset="UTF-8">
@@ -20,11 +21,7 @@
 <body>
 
 <header>
-    <div sec:authorize="!isAuthenticated()" th:insert="fragments/headerAnonymous :: header"></div>
-
-    <div sec:authorize="hasRole('ROLE_USER')" th:insert="fragments/headerUser :: header"></div>
-
-    <div sec:authorize="hasRole('ROLE_ADMIN')" th:insert="fragments/headerAdmin :: header"></div>
+    <div th:insert="fragments/header :: header"></div>
 </header>
 
 <div class="container mt-5">
@@ -86,6 +83,7 @@
 
         <br>
         <br>
+
 
     </form>
 </div>

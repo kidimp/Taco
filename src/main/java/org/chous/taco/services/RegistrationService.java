@@ -41,7 +41,7 @@ public class RegistrationService {
             String subject = "Please activate your account";
             String text = String.format(
                     "Hello, %s! \n" +
-                            "Welcome to Bets. Please, visit next link to activate your account: http://localhost:8080/activate/%s",
+                            "Welcome to Taco. Please, visit next link to activate your account: http://localhost:8080/activate/%s",
                     user.getUsername(), user.getActivationCode()
             );
 

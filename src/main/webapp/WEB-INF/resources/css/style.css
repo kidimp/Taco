@@ -4,6 +4,20 @@
     background: transparent;
     cursor: pointer;
     margin: 0;
+    text-align: center;
+    font-size: 16px;
+    line-height: 1.1;
+    font-family:'ALS Malina';
+    color: white;
+}
+
+.button_b {
+    min-width: 117px;
+    min-height:38px;
+    text-align: center;
+    font-size: 16px;
+    font-family:'ALS Malina';
+    color: white
 }
 
 .ingredient_list {
@@ -61,6 +75,13 @@
     line-height: 1.1;
     font-family:'ALS Malina';
     color: #000000;
+}
+
+.malina_20px_white {
+    font-size: 20px;
+    line-height: 1.1;
+    font-family:'ALS Malina';
+    color: white;
 }
 
 .helvetica_15px_darkgray {
