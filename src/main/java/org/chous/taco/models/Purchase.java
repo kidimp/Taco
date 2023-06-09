@@ -6,10 +6,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -21,27 +18,35 @@ public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotBlank(message="Delivery name is required")
+    private boolean active;
+    @NotBlank(message = "Name must not be empty")
+    @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
     private String deliveryName;
-//    @Pattern(regexp="^(\\+\\d{3}( )?)?((\\(\\d{2}\\))|\\d{1,3})[- .]?\\d{7}[- .]?$", message="Must be formatted +375 29 1234567")
+    //    @Pattern(regexp="^(\\+\\d{3}( )?)?((\\(\\d{2}\\))|\\d{1,3})[- .]?\\d{7}[- .]?$", message="Must be formatted +375 29 1234567")
     private String deliveryPhoneNumber;
-    @NotBlank(message="Street is required")
+    @NotBlank(message = "Street is required")
     private String deliveryStreet;
-    @NotBlank(message="Building is required")
+    @NotBlank(message = "Building is required")
     private String deliveryBuilding;
-    @NotBlank(message="Building entrance is required")
+    @NotBlank(message = "Building entrance is required")
     private String deliveryEntrance;
-    @NotBlank(message="Floor is required")
+    @NotBlank(message = "Floor is required")
     private String deliveryFloor;
-    @NotBlank(message="Apartment is required")
+    @NotBlank(message = "Apartment is required")
     private String deliveryApartment;
     private String deliveryComment;
-    @CreditCardNumber(message="Not a valid credit card number")
+    @CreditCardNumber(message = "Not a valid credit card number")
     private String ccNumber;
-    @Pattern(regexp="^(0[1-9]|1[0-2])(/)([2-9]\\d)$", message="Must be formatted MM/YY")
+    @Pattern(regexp = "^(0[1-9]|1[0-2])(/)([2-9]\\d)$", message = "Must be formatted MM/YY")
     private String ccExpiration;
-    @Digits(integer=3, fraction=0, message="Invalid CVV")
+    @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
+
+
+    {
+        active = true;
+    }
+
 
     @ManyToMany()
     @JoinTable(

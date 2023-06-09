@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Controller
 public class NewCustomTacoController {
 
-    private final TacosRepository tacoRepository;
+    private final TacosRepository tacosRepository;
     private final IngredientsRepository ingredientRepository;
 
     private int weight = 0;
@@ -33,7 +33,7 @@ public class NewCustomTacoController {
 
     @Autowired
     public NewCustomTacoController(TacosRepository tacoRepository, IngredientsRepository ingredientRepository) {
-        this.tacoRepository = tacoRepository;
+        this.tacosRepository = tacoRepository;
         this.ingredientRepository = ingredientRepository;
     }
 
@@ -96,12 +96,12 @@ public class NewCustomTacoController {
 
         // Помечаем, что мы создаём кастомный тако.
         taco.setCustom(true);
-        // Помечаем, что данный тако принадлежит активному заказу.
-        taco.setActive(true);
+//        // Помечаем, что данный тако принадлежит активному заказу.
+//        taco.setActive(true);
 
         // Сохраняем заполненый объект тако в базу данных. Объект сохранился последним в таблице и после сохранения
         // автоматически получил свой уникальный id.
-        tacoRepository.save(taco);
+        tacosRepository.save(taco);
 
         // Очищаем значения полей, чтобы можно было создать еўё одно тако с нуля.
         clean();

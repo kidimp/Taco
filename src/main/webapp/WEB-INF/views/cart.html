@@ -29,7 +29,7 @@
         <br><br>
 
         <div>
-            <th:block th:each="taco : ${activeTacos}">
+            <th:block th:each="taco : ${currentPurchaseTacos}">
 
                 <span th:text="${taco.getName()} + ' ' + ${taco.getPrice()} + ' byn'"
                       class="helvetica_15px_darkgray"></span>

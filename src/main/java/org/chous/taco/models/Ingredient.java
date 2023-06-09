@@ -40,7 +40,12 @@ public class Ingredient {
     @Min(value = 1, message = "Weight must be at least 1 gram")
     private int carbs;
     @Min(value = 0, message = "Price must not be negative")
-    private BigDecimal price = new BigDecimal("0.0");
+    private BigDecimal price;
+
+
+    {
+        price = new BigDecimal("0.0");
+    }
 
 
     public enum Type {

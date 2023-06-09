@@ -30,6 +30,7 @@ public class User {
     private String activationCode;
     private String resetPasswordToken;
 
+
     @OneToMany()
     @JoinTable(
             name = "user_purchases",
