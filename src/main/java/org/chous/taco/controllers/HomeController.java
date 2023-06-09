@@ -1,15 +1,12 @@
 package org.chous.taco.controllers;
 
-import org.chous.taco.models.Purchase;
 import org.chous.taco.models.Taco;
 import org.chous.taco.repositories.TacosRepository;
-import org.chous.taco.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,10 +24,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model, @ModelAttribute("tacoToBeAdded") Taco taco) {
-
-        // Получаем информацию, в какой роли (anonymous, user, admin) пользователь зашёл на страницу.
-        // Это нужно для корректного отображения хедера.
-        UserService.getCurrentPrincipalUserRole(model);
 
         // Получаем все стандартные (не кастомные) тако из базы данных.
         List<Taco> standardTacosUnsorted = tacoRepository.findTacoByCustom(false);
@@ -61,10 +54,21 @@ public class HomeController {
     }
 
 
-    @GetMapping("/page-under-construction")
-    public String pageUnderConstruction() {
+    @GetMapping("/admin")
+    public String admin() {
+        return "/admin";
+    }
 
-        return "page-under-construction";
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "/profile";
+    }
+
+
+    @GetMapping("/stats")
+    public String stats() {
+        return "/stats";
     }
 
 }

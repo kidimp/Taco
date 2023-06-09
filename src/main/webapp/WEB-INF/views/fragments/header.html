@@ -37,14 +37,14 @@
                         <a class="malina_20px_white nav-link active" aria-current="page" href="/cart">Корзина</a>
                     </li>
                     <li class="nav-item">
-                        <a class="malina_20px_white nav-link active" aria-current="page" href="/page-under-construction">Личный кабинет</a>
+                        <a class="malina_20px_white nav-link active" aria-current="page" href="/profile">Личный кабинет</a>
                     </li>
                     <li class="nav-item">
-                        <a class="malina_20px_white nav-link active" aria-current="page" href="/page-under-construction">Статистика</a>
+                        <a class="malina_20px_white nav-link active" aria-current="page" href="/stats">Статистика</a>
                     </li>
                     <div sec:authorize="hasRole('ROLE_ADMIN')">
                         <li class="nav-item">
-                            <a class="malina_20px_white nav-link active" aria-current="page" href="/page-under-construction">Админ</a>
+                            <a class="malina_20px_white nav-link active" aria-current="page" href="/admin">Админ</a>
                         </li>
                     </div>
 
@@ -52,8 +52,7 @@
 
             </div>
 
-            <div class="malina_20px_white nav-link active" sec:authorize="isAuthenticated()">
-                <a sec:authentication="name"></a>
+            <div class="malina_20px_white nav-link active" sec:authorize="isAuthenticated()"><a sec:authentication="name" href="/profile" style="color: white"></a>
             </div>
 
             <div class="text-end" sec:authorize="isAuthenticated()">
