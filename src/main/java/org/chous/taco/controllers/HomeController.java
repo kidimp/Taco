@@ -1,10 +1,11 @@
 package org.chous.taco.controllers;
 
+import org.chous.taco.models.Cart;
 import org.chous.taco.models.Purchase;
 import org.chous.taco.models.Taco;
 import org.chous.taco.models.User;
+import org.chous.taco.repositories.CartsRepository;
 import org.chous.taco.repositories.UsersRepository;
-import org.chous.taco.repositories.PurchasesRepository;
 import org.chous.taco.repositories.TacosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,16 +27,16 @@ import java.util.stream.Collectors;
 public class HomeController {
 
     private final TacosRepository tacoRepository;
-    private final PurchasesRepository purchasesRepository;
+    private final CartsRepository cartsRepository;
     private final UsersRepository usersRepository;
-    private List<Taco> currentPurchaseTacos;
+    private List<Taco> cartTacos;
 
     @Autowired
-    public HomeController(TacosRepository tacoRepository, PurchasesRepository purchasesRepository, UsersRepository usersRepository) {
+    public HomeController(TacosRepository tacoRepository, CartsRepository cartsRepository, UsersRepository usersRepository) {
         this.tacoRepository = tacoRepository;
-        this.purchasesRepository = purchasesRepository;
+        this.cartsRepository = cartsRepository;
         this.usersRepository = usersRepository;
-        currentPurchaseTacos = new ArrayList<>();
+        cartTacos = new ArrayList<>();
     }
 
 
@@ -65,8 +66,42 @@ public class HomeController {
     @PostMapping("/")
     public String home(@RequestParam(value = "tacoToAdd") Taco tacoToAdd) {
 
-        // Здесь добавляем тако, которые выбрал пользователь, в список.
-        currentPurchaseTacos.add(tacoToAdd);
+        // Определяем, какой пользователь пытается добавить тако в корзину.
+        // Если это аноним, то отправляем его на страницу логина.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() != "anonymousUser") {
+            // Здесь добавляем тако, которые выбрал пользователь, в список.
+            cartTacos.add(tacoToAdd);
+        } else {
+            return "redirect:/login";
+        }
+
+        // Определяем текущего авторизированного пользователя.
+        User currentPrincipalUser = getCurrentPrincipleUser();
+
+        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
+        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+
+        // Если активной корзины нет, то создаём новую активную корзину для текущего пользователя.
+        if (cart == null) {
+            cart = new Cart();
+            // Присваиваем активной карзине текущего пользователя.
+            cart.setUserId(currentPrincipalUser.getId());
+        }
+
+        // Список с выбранными пользователем тако добавляем в корзину.
+        cart.setTacos(cartTacos);
+        // Сохраняем корзину в базу данных.
+        cartsRepository.save(cart);
+
+        // Обновляем список всех корзин текущего пользователя и сохраняем в базу данных.
+        List<Cart> currentPrincipalUserCarts = currentPrincipalUser.getCarts();
+        if (currentPrincipalUserCarts == null) {
+            currentPrincipalUserCarts = new ArrayList<>();
+        }
+        currentPrincipalUserCarts.add(cart);
+        currentPrincipalUser.setCarts(currentPrincipalUserCarts);
+        usersRepository.save(currentPrincipalUser);
 
         return "redirect:/cart";
     }
@@ -78,13 +113,29 @@ public class HomeController {
         // Создаём переменную для суммарной цены всех тако в заказе.
         BigDecimal totalPrise = new BigDecimal("0.0");
 
+        // Определяем текущего авторизированного пользователя.
+        User currentPrincipalUser = getCurrentPrincipleUser();
+
+        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
+        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+
+        // Если активная корзина есть, то берём из неё все тако, чтобы отобразить их на странице.
+        // Если активной корзины нет, то создаём новый пустой список тако.
+        if (cart != null) {
+            cartTacos = cart.getTacos();
+        } else {
+            cartTacos = new ArrayList<>();
+        }
+
         // Подсчитываем суммарную стоимость заказа.
-        for (Taco taco : currentPurchaseTacos) {
-            totalPrise = totalPrise.add(taco.getPrice());
+        if (cartTacos != null) {
+            for (Taco taco : cartTacos) {
+                totalPrise = totalPrise.add(taco.getPrice());
+            }
         }
 
         // Передаём на view корзины все тако в заказе и общую стоимость заказа.
-        model.addAttribute("currentPurchaseTacos", currentPurchaseTacos);
+        model.addAttribute("cartTacos", cartTacos);
         model.addAttribute("totalPrise", totalPrise);
 
         return "cart";
@@ -95,28 +146,24 @@ public class HomeController {
     public String createPurchase(@ModelAttribute("purchase") @Valid Purchase purchase, BindingResult bindingResult) {
 
         // Валидируем, правильно ли заполнены все необходимые формы и не пустой ли заказ.
-        if (bindingResult.hasErrors() || currentPurchaseTacos.isEmpty()) {
+        if (bindingResult.hasErrors() || cartTacos.isEmpty()) {
             return "cart";
         }
 
-        // Список с выбранными пользователем тако добавляем в заказ.
-        purchase.setTacos(currentPurchaseTacos);
-
-        // Закрываем заказ.
-        purchase.setActive(false);
-
-        // Сохраняем заказ в базу данных.
-        purchasesRepository.save(purchase);
-
         // Определяем текущего авторизированного пользователя.
-        int currentPrincipalUserId = 0;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() != "anonymousUser") {
-            currentPrincipalUserId = Objects.requireNonNull(usersRepository.findByUsername(authentication.getName())
-                    .orElse(null)).getId();
-        }
-        User currentPrincipalUser = usersRepository.findById(currentPrincipalUserId);
+        User currentPrincipalUser = getCurrentPrincipleUser();
 
+        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
+        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+        // Делаем корзину неактивной (погашаем корзину).
+        cart.setActive(false);
+        // Сохраняем корзину в базу данных.
+        cartsRepository.save(cart);
+
+        // Присваиваем активному заказу текущего пользователя.
+        purchase.setUserId(currentPrincipalUser.getId());
+        // Список с выбранными пользователем тако добавляем в заказ.
+        purchase.setTacos(cartTacos);
         // Получаем список всех заказов текущего пользователя.
         List<Purchase> currentUserPurchases = currentPrincipalUser.getPurchases();
         // Добавляем текущий заказ в список всех заказов текущего пользователя.
@@ -127,9 +174,24 @@ public class HomeController {
         usersRepository.save(currentPrincipalUser);
 
         // Очищаем текущий список тако.
-        currentPurchaseTacos = new ArrayList<>();
+        cartTacos = new ArrayList<>();
+
+        // Логика корзины и покупки разделена, чтобы мы могли правильно отображать и проверять поля в заказе,
+        // пока пользователь заполняет корзину.
 
         return "redirect:/done";
+    }
+
+
+    // Определяем текущего авторизированного пользователя.
+    public User getCurrentPrincipleUser() {
+        int currentPrincipalUserId = 0;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() != "anonymousUser") {
+            currentPrincipalUserId = Objects.requireNonNull(usersRepository.findByUsername(authentication.getName())
+                    .orElse(null)).getId();
+        }
+        return usersRepository.findById(currentPrincipalUserId);
     }
 
 

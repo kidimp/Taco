@@ -18,7 +18,7 @@ public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private boolean active;
+    private int userId;
     @NotBlank(message = "Name must not be empty")
     @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
     private String deliveryName;
@@ -41,11 +41,6 @@ public class Purchase {
     private String ccExpiration;
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
     private String ccCVV;
-
-
-    {
-        active = true;
-    }
 
 
     @ManyToMany()

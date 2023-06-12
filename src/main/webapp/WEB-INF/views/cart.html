@@ -29,7 +29,7 @@
         <br><br>
 
         <div>
-            <th:block th:each="taco : ${currentPurchaseTacos}">
+            <th:block th:each="taco : ${cartTacos}">
 
                 <span th:text="${taco.getName()} + ' ' + ${taco.getPrice()} + ' byn'"
                       class="helvetica_15px_darkgray"></span>
@@ -108,30 +108,30 @@
         <br>
         <br>
 
-<!--        <label for="deliveryTime" class="helvetica_15px_darkgray">Время заказа </label>-->
-<!--        <br>-->
-<!--        <div class="form-check form-check-inline">-->
-<!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="withinTime" />-->
-<!--            <label class="form-check-label" for="withinTime" style="font-size: 15px;font-family:'Helvetica';color: #999999;">В течение 45 минут</label>-->
-<!--        </div>-->
-<!--        <div class="form-check form-check-inline">-->
-<!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="reservation" />-->
-<!--            <label class="form-check-label" for="reservation" style="font-size: 15px;font-family:'Helvetica';color: #999999;">Предварительный заказ</label>-->
-<!--        </div>-->
+        <!--        <label for="deliveryTime" class="helvetica_15px_darkgray">Время заказа </label>-->
+        <!--        <br>-->
+        <!--        <div class="form-check form-check-inline">-->
+        <!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="withinTime" />-->
+        <!--            <label class="form-check-label" for="withinTime" style="font-size: 15px;font-family:'Helvetica';color: #999999;">В течение 45 минут</label>-->
+        <!--        </div>-->
+        <!--        <div class="form-check form-check-inline">-->
+        <!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="reservation" />-->
+        <!--            <label class="form-check-label" for="reservation" style="font-size: 15px;font-family:'Helvetica';color: #999999;">Предварительный заказ</label>-->
+        <!--        </div>-->
 
-<!--        <br>-->
-<!--        <br>-->
+        <!--        <br>-->
+        <!--        <br>-->
 
-<!--        <label for="paymentMethod" class="helvetica_15px_darkgray">Способ оплаты </label>-->
-<!--        <br>-->
-<!--        <div class="form-check form-check-inline">-->
-<!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="onSite" />-->
-<!--            <label class="form-check-label" for="onSite" style="font-size: 15px;font-family:'Helvetica';color: #999999;">На месте</label>-->
-<!--        </div>-->
-<!--        <div class="form-check form-check-inline">-->
-<!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="byCard" />-->
-<!--            <label class="form-check-label" for="byCard" style="font-size: 15px;font-family:'Helvetica';color: #999999;">Картой онлайн</label>-->
-<!--        </div>-->
+        <!--        <label for="paymentMethod" class="helvetica_15px_darkgray">Способ оплаты </label>-->
+        <!--        <br>-->
+        <!--        <div class="form-check form-check-inline">-->
+        <!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="onSite" />-->
+        <!--            <label class="form-check-label" for="onSite" style="font-size: 15px;font-family:'Helvetica';color: #999999;">На месте</label>-->
+        <!--        </div>-->
+        <!--        <div class="form-check form-check-inline">-->
+        <!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="byCard" />-->
+        <!--            <label class="form-check-label" for="byCard" style="font-size: 15px;font-family:'Helvetica';color: #999999;">Картой онлайн</label>-->
+        <!--        </div>-->
 
         <br><br>
 

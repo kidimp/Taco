@@ -19,16 +19,16 @@ import java.util.List;
 @Controller
 public class PurchaseController {
 
-    private final TacosRepository tacoRepository;
-    private final PurchasesRepository purchaseRepository;
-
-    @Autowired
-    public PurchaseController(TacosRepository tacoRepository, PurchasesRepository purchaseRepository) {
-        this.tacoRepository = tacoRepository;
-        this.purchaseRepository = purchaseRepository;
-    }
-
-
+//    private final TacosRepository tacoRepository;
+//    private final PurchasesRepository purchaseRepository;
+//
+//    @Autowired
+//    public PurchaseController(TacosRepository tacoRepository, PurchasesRepository purchaseRepository) {
+//        this.tacoRepository = tacoRepository;
+//        this.purchaseRepository = purchaseRepository;
+//    }
+//
+//
 //    @GetMapping("/cart")
 //    public String cart(Model model, @ModelAttribute("purchase") Purchase purchase) {
 //

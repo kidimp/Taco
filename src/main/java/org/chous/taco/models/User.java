@@ -31,12 +31,20 @@ public class User {
     private String resetPasswordToken;
 
 
-    @OneToMany()
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_purchases",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "purchase_id", referencedColumnName = "id")
     )
     private List<Purchase> purchases;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_carts",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "cart_id", referencedColumnName = "id")
+    )
+    private List<Cart> carts;
 
 }
