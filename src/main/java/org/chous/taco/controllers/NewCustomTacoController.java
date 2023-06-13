@@ -1,10 +1,16 @@
 package org.chous.taco.controllers;
 
+import org.chous.taco.models.Cart;
 import org.chous.taco.models.Ingredient;
 import org.chous.taco.models.Taco;
+import org.chous.taco.models.User;
+import org.chous.taco.repositories.CartsRepository;
 import org.chous.taco.repositories.IngredientsRepository;
 import org.chous.taco.repositories.TacosRepository;
+import org.chous.taco.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,7 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -22,6 +30,8 @@ public class NewCustomTacoController {
 
     private final TacosRepository tacosRepository;
     private final IngredientsRepository ingredientRepository;
+    private final CartsRepository cartsRepository;
+    private final UsersRepository usersRepository;
 
     private int weight = 0;
     private int calories = 0;
@@ -32,9 +42,11 @@ public class NewCustomTacoController {
 
 
     @Autowired
-    public NewCustomTacoController(TacosRepository tacoRepository, IngredientsRepository ingredientRepository) {
+    public NewCustomTacoController(TacosRepository tacoRepository, IngredientsRepository ingredientRepository, CartsRepository cartsRepository, UsersRepository usersRepository) {
         this.tacosRepository = tacoRepository;
         this.ingredientRepository = ingredientRepository;
+        this.cartsRepository = cartsRepository;
+        this.usersRepository = usersRepository;
     }
 
 
@@ -96,14 +108,49 @@ public class NewCustomTacoController {
 
         // Помечаем, что мы создаём кастомный тако.
         taco.setCustom(true);
-//        // Помечаем, что данный тако принадлежит активному заказу.
-//        taco.setActive(true);
 
         // Сохраняем заполненый объект тако в базу данных. Объект сохранился последним в таблице и после сохранения
         // автоматически получил свой уникальный id.
         tacosRepository.save(taco);
 
-        // Очищаем значения полей, чтобы можно было создать еўё одно тако с нуля.
+        /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
+
+        List<Taco> cartTacos = new ArrayList<>();
+
+        // Определяем текущего авторизированного пользователя.
+        User currentPrincipalUser = getCurrentPrincipleUser();
+
+        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
+        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+
+        // Если активная корзина есть, то берём из неё все тако, чтобы отобразить их на странице.
+        // Если активной корзины нет, то создаём новую активную корзину для текущего пользователя.
+        if (cart != null) {
+            cartTacos = cart.getTacos();
+        } else {
+            cart = new Cart();
+            // Присваиваем новой активной карзине текущего пользователя.
+            cart.setUserId(currentPrincipalUser.getId());
+        }
+
+        // Определяем, какой пользователь пытается добавить тако в корзину.
+        // Если это аноним, то отправляем его на страницу логина.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() != "anonymousUser") {
+            // Здесь добавляем тако, которые выбрал пользователь, в список.
+            cartTacos.add(taco);
+        } else {
+            return "redirect:/login";
+        }
+
+        // Список с выбранными пользователем тако добавляем в корзину.
+        cart.setTacos(cartTacos);
+        // Сохраняем корзину в базу данных.
+        cartsRepository.save(cart);
+
+        /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
+
+        // Очищаем значения полей тако, чтобы можно было создать ещё одно тако с нуля.
         clean();
 
         return "redirect:/cart";
@@ -117,6 +164,18 @@ public class NewCustomTacoController {
         fat = 0;
         carbs = 0;
         price = new BigDecimal("0.0");
+    }
+
+
+    // Определяем текущего авторизированного пользователя.
+    public User getCurrentPrincipleUser() {
+        int currentPrincipalUserId = 0;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() != "anonymousUser") {
+            currentPrincipalUserId = Objects.requireNonNull(usersRepository.findByUsername(authentication.getName())
+                    .orElse(null)).getId();
+        }
+        return usersRepository.findById(currentPrincipalUserId);
     }
 
 }

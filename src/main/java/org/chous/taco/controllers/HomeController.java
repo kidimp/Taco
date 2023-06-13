@@ -29,14 +29,12 @@ public class HomeController {
     private final TacosRepository tacoRepository;
     private final CartsRepository cartsRepository;
     private final UsersRepository usersRepository;
-    private List<Taco> cartTacos;
 
     @Autowired
     public HomeController(TacosRepository tacoRepository, CartsRepository cartsRepository, UsersRepository usersRepository) {
         this.tacoRepository = tacoRepository;
         this.cartsRepository = cartsRepository;
         this.usersRepository = usersRepository;
-        cartTacos = new ArrayList<>();
     }
 
 
@@ -66,6 +64,26 @@ public class HomeController {
     @PostMapping("/")
     public String home(@RequestParam(value = "tacoToAdd") Taco tacoToAdd) {
 
+        /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
+
+        List<Taco> cartTacos = new ArrayList<>();
+
+        // Определяем текущего авторизированного пользователя.
+        User currentPrincipalUser = getCurrentPrincipleUser();
+
+        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
+        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+
+        // Если активная корзина есть, то берём из неё все тако, чтобы отобразить их на странице.
+        // Если активной корзины нет, то создаём новую активную корзину для текущего пользователя.
+        if (cart != null) {
+            cartTacos = cart.getTacos();
+        } else {
+            cart = new Cart();
+            // Присваиваем новой активной карзине текущего пользователя.
+            cart.setUserId(currentPrincipalUser.getId());
+        }
+
         // Определяем, какой пользователь пытается добавить тако в корзину.
         // Если это аноним, то отправляем его на страницу логина.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -76,32 +94,12 @@ public class HomeController {
             return "redirect:/login";
         }
 
-        // Определяем текущего авторизированного пользователя.
-        User currentPrincipalUser = getCurrentPrincipleUser();
-
-        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
-        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
-
-        // Если активной корзины нет, то создаём новую активную корзину для текущего пользователя.
-        if (cart == null) {
-            cart = new Cart();
-            // Присваиваем активной карзине текущего пользователя.
-            cart.setUserId(currentPrincipalUser.getId());
-        }
-
         // Список с выбранными пользователем тако добавляем в корзину.
         cart.setTacos(cartTacos);
         // Сохраняем корзину в базу данных.
         cartsRepository.save(cart);
 
-        // Обновляем список всех корзин текущего пользователя и сохраняем в базу данных.
-        List<Cart> currentPrincipalUserCarts = currentPrincipalUser.getCarts();
-        if (currentPrincipalUserCarts == null) {
-            currentPrincipalUserCarts = new ArrayList<>();
-        }
-        currentPrincipalUserCarts.add(cart);
-        currentPrincipalUser.setCarts(currentPrincipalUserCarts);
-        usersRepository.save(currentPrincipalUser);
+        /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
 
         return "redirect:/cart";
     }
@@ -110,8 +108,8 @@ public class HomeController {
     @GetMapping("/cart")
     public String cart(Model model, @ModelAttribute("purchase") Purchase purchase) {
 
-        // Создаём переменную для суммарной цены всех тако в заказе.
-        BigDecimal totalPrise = new BigDecimal("0.0");
+        /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
+        List<Taco> cartTacos;
 
         // Определяем текущего авторизированного пользователя.
         User currentPrincipalUser = getCurrentPrincipleUser();
@@ -126,6 +124,10 @@ public class HomeController {
         } else {
             cartTacos = new ArrayList<>();
         }
+        /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
+
+        // Создаём переменную для суммарной цены всех тако в заказе.
+        BigDecimal totalPrise = new BigDecimal("0.0");
 
         // Подсчитываем суммарную стоимость заказа.
         if (cartTacos != null) {
@@ -145,16 +147,29 @@ public class HomeController {
     @PostMapping("/cart")
     public String createPurchase(@ModelAttribute("purchase") @Valid Purchase purchase, BindingResult bindingResult) {
 
-        // Валидируем, правильно ли заполнены все необходимые формы и не пустой ли заказ.
-        if (bindingResult.hasErrors() || cartTacos.isEmpty()) {
-            return "cart";
-        }
+        /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
+        List<Taco> cartTacos;
 
         // Определяем текущего авторизированного пользователя.
         User currentPrincipalUser = getCurrentPrincipleUser();
 
         // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
         Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+
+        // Если активная корзина есть, то берём из неё все тако, чтобы отобразить их на странице.
+        // Если активной корзины нет, то создаём новый пустой список тако.
+        if (cart != null) {
+            cartTacos = cart.getTacos();
+        } else {
+            cartTacos = new ArrayList<>();
+        }
+        /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
+
+        // Валидируем, правильно ли заполнены все необходимые формы и не пустой ли заказ.
+        if (bindingResult.hasErrors() || cartTacos.isEmpty()) {
+            return "cart";
+        }
+
         // Делаем корзину неактивной (погашаем корзину).
         cart.setActive(false);
         // Сохраняем корзину в базу данных.
@@ -172,9 +187,6 @@ public class HomeController {
         currentPrincipalUser.setPurchases(currentUserPurchases);
         // Сохраняем обновлённые данные о пользователе и его заказах в базу данных.
         usersRepository.save(currentPrincipalUser);
-
-        // Очищаем текущий список тако.
-        cartTacos = new ArrayList<>();
 
         // Логика корзины и покупки разделена, чтобы мы могли правильно отображать и проверять поля в заказе,
         // пока пользователь заполняет корзину.
