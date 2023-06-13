@@ -31,8 +31,20 @@
         <div>
             <th:block th:each="taco : ${cartTacos}">
 
-                <span th:text="${taco.getName()} + ' ' + ${taco.getPrice()} + ' byn'"
+
+                <span th:if="${taco.getSize() == 0.75}"
+                      th:text="${taco.getName()} + ' ' + 'маленькое' + ' ' + ${taco.getPrice()} + ' byn'"
                       class="helvetica_15px_darkgray"></span>
+
+                <span th:if="${taco.getSize() == 1}"
+                      th:text="${taco.getName()} + ' ' + 'среднее' + ' ' + ${taco.getPrice()} + ' byn'"
+                      class="helvetica_15px_darkgray"></span>
+
+                <span th:if="${taco.getSize() == 1.25}"
+                      th:text="${taco.getName()} + ' ' + 'большое' + ' ' + ${taco.getPrice()} + ' byn'"
+                      class="helvetica_15px_darkgray"></span>
+
+                <button name="tacoToDelete" value="tacoToDelete" class="submit_button_malina_15px_orange_lightgray">Удалить</button>
 
                 <br>
 
@@ -141,7 +153,7 @@
 
         <input type="submit" value="Заказать!" class="submit_button_malina_20px_orange_lightgray"/>
 
-        <br><br>
+        <br><br><br><br>
 
     </form>
 

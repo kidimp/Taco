@@ -145,7 +145,11 @@ public class HomeController {
 
 
     @PostMapping("/cart")
-    public String createPurchase(@ModelAttribute("purchase") @Valid Purchase purchase, BindingResult bindingResult) {
+    public String createPurchase(@ModelAttribute("purchase") @Valid Purchase purchase,
+                                 @RequestParam(value = "tacoToDelete") Taco tacoToDelete,
+                                 BindingResult bindingResult) {
+
+        System.out.println(tacoToDelete);
 
         /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
         List<Taco> cartTacos;
