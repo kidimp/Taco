@@ -29,6 +29,8 @@ public class User {
     private boolean isActive;
     private String activationCode;
     private String resetPasswordToken;
+    //    @Pattern(regexp="^(\\+\\d{3}( )?)?((\\(\\d{2}\\))|\\d{1,3})[- .]?\\d{7}[- .]?$", message="Must be formatted +375 29 1234567")
+    private String phoneNumber;
 
 
     @OneToMany(cascade = CascadeType.ALL)
@@ -39,4 +41,19 @@ public class User {
     )
     private List<Purchase> purchases;
 
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "user_delivery_addresses",
+//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "delivery_addresses_id", referencedColumnName = "id")
+//    )
+//    private List<DeliveryAddress> deliveryAddress;
+//
+//    @OneToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "user_credit_cards",
+//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "credit_cards_id", referencedColumnName = "id")
+//    )
+//    private List<CreditCard> creditCards;
 }

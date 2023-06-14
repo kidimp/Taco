@@ -37,6 +37,18 @@ public class UserService implements UserDetailsService {
     }
 
 
+    // Определяем текущего авторизированного пользователя.
+    public static User getCurrentPrincipleUser() {
+        int currentPrincipalUserId = 0;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() != "anonymousUser") {
+            currentPrincipalUserId = Objects.requireNonNull(usersRepository.findByUsername(authentication.getName())
+                    .orElse(null)).getId();
+        }
+        return usersRepository.findById(currentPrincipalUserId);
+    }
+
+
     public static void getCurrentPrincipalUserRole(Model model) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username;

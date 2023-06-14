@@ -18,7 +18,33 @@
 
   <br><br>
 
-  <span class="malina_28px_orange">Страница личного кабинета в разработке!</span>
+  <span th:text="'Привет, ' + ${username} + '!'" class="malina_28px_orange"></span>
+
+  <br><br>
+
+  <span class="malina_28px_orange">Адреса</span>
+
+  <br><br>
+
+  <div th:if="${deliveryAddresses != null}">
+    <th:block th:each="address : ${deliveryAddresses}">
+      <span th:text="'улица ' + ${address.getDeliveryStreet()} + ', дом ' + ${address.getDeliveryBuilding()} + ', подъезд '
+                    + ${address.getDeliveryEntrance()} + ', этаж ' + ${address.getDeliveryFloor()} + ', квартира '
+                    + ${address.getDeliveryApartment()}"
+            class="helvetica_15px_darkgray"></span>
+      <br>
+    </th:block>
+    <br>
+    <div th:if="${deliveryAddresses.size() <= 5}">
+      <a href="/profile/new_delivery_address" class="helvetica_15px_darkgray">Добавить адресс доставки</a>
+    </div>
+  </div>
+  <div th:if="${deliveryAddresses == null}">
+    <a href="/profile/new_delivery_address" class="helvetica_15px_darkgray">Добавить адресс доставки</a>
+  </div>
+
+
+  <br>
 
 </div>
 

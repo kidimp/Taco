@@ -1,12 +1,11 @@
 package org.chous.taco.controllers;
 
-import org.chous.taco.models.Cart;
-import org.chous.taco.models.Purchase;
-import org.chous.taco.models.Taco;
-import org.chous.taco.models.User;
+import org.chous.taco.models.*;
 import org.chous.taco.repositories.CartsRepository;
+import org.chous.taco.repositories.DeliveryAddressesRepository;
 import org.chous.taco.repositories.UsersRepository;
 import org.chous.taco.repositories.TacosRepository;
+import org.chous.taco.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,7 +68,7 @@ public class HomeController {
         List<Taco> cartTacos = new ArrayList<>();
 
         // Определяем текущего авторизированного пользователя.
-        User currentPrincipalUser = getCurrentPrincipleUser();
+        User currentPrincipalUser = UserService.getCurrentPrincipleUser();
 
         // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
         Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
@@ -112,7 +111,7 @@ public class HomeController {
         List<Taco> cartTacos;
 
         // Определяем текущего авторизированного пользователя.
-        User currentPrincipalUser = getCurrentPrincipleUser();
+        User currentPrincipalUser = UserService.getCurrentPrincipleUser();
 
         // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
         Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
@@ -155,7 +154,7 @@ public class HomeController {
         List<Taco> cartTacos;
 
         // Определяем текущего авторизированного пользователя.
-        User currentPrincipalUser = getCurrentPrincipleUser();
+        User currentPrincipalUser = UserService.getCurrentPrincipleUser();
 
         // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
         Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
@@ -199,18 +198,6 @@ public class HomeController {
     }
 
 
-    // Определяем текущего авторизированного пользователя.
-    public User getCurrentPrincipleUser() {
-        int currentPrincipalUserId = 0;
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() != "anonymousUser") {
-            currentPrincipalUserId = Objects.requireNonNull(usersRepository.findByUsername(authentication.getName())
-                    .orElse(null)).getId();
-        }
-        return usersRepository.findById(currentPrincipalUserId);
-    }
-
-
     @GetMapping("/done")
     public String done() {
         return "done";
@@ -220,12 +207,6 @@ public class HomeController {
     @GetMapping("/admin")
     public String admin() {
         return "/admin";
-    }
-
-
-    @GetMapping("/profile")
-    public String profile() {
-        return "/profile";
     }
 
 
