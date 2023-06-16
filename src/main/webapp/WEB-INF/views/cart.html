@@ -16,41 +16,44 @@
 
 <div class="container mt-5">
 
-    <form th:method="POST" th:action="@{/cart}" th:object="${purchase}">
+    <br><br>
 
-        <br><br>
+    <span class="malina_28px_orange">Оформление заказа</span>
 
-        <span class="malina_28px_orange">Оформление заказа</span>
+    <br><br>
 
-        <br><br>
+    <span class="malina_20px_black">Ваш заказ</span>
 
-        <span class="malina_20px_black">Ваш заказ</span>
+    <br><br>
 
-        <br><br>
-
-            <div>
-                <th:block th:each="taco : ${cartTacos}">
+    <form th:method="POST" th:action="@{/deleteTaco}" th:object="${taco}">
+        <div>
+            <th:block th:each="taco : ${cartTacos}">
 
                 <span th:if="${taco.getSize() == 0.75}"
                       th:text="${taco.getName()} + ' ' + 'маленькое' + ' ' + ${taco.getPrice()} + ' byn'"
                       class="helvetica_15px_darkgray"></span>
 
-                    <span th:if="${taco.getSize() == 1}"
-                          th:text="${taco.getName()} + ' ' + 'среднее' + ' ' + ${taco.getPrice()} + ' byn'"
-                          class="helvetica_15px_darkgray"></span>
+                <span th:if="${taco.getSize() == 1}"
+                      th:text="${taco.getName()} + ' ' + 'среднее' + ' ' + ${taco.getPrice()} + ' byn'"
+                      class="helvetica_15px_darkgray"></span>
 
-                    <span th:if="${taco.getSize() == 1.25}"
-                          th:text="${taco.getName()} + ' ' + 'большое' + ' ' + ${taco.getPrice()} + ' byn'"
-                          class="helvetica_15px_darkgray"></span>
+                <span th:if="${taco.getSize() == 1.25}"
+                      th:text="${taco.getName()} + ' ' + 'большое' + ' ' + ${taco.getPrice()} + ' byn'"
+                      class="helvetica_15px_darkgray"></span>
 
-                    <button name="tacoToDelete" th:value="${taco.getId()}" class="delete_button_helvetica_15px_orange">
-                        Удалить
-                    </button>
+                <button name="tacoToDelete" th:value="${taco.getId()}" class="delete_button_helvetica_15px_orange">
+                    Удалить
+                </button>
 
-                    <br>
+                <br>
 
-                </th:block>
-            </div>
+            </th:block>
+        </div>
+    </form>
+
+
+    <form th:method="POST" th:action="@{/cart}" th:object="${purchase}">
 
         <br>
 
