@@ -2,50 +2,86 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Личный кабинет</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="/css/style.css">
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
 
 <header>
-  <div th:insert="fragments/header :: header"></div>
+    <div th:insert="fragments/header :: header"></div>
 </header>
 
 <div class="container mt-5">
 
-  <br><br>
+    <form th:method="POST" th:action="@{/profile}">
 
-  <span th:text="'Привет, ' + ${username} + '!'" class="malina_28px_orange"></span>
+        <br><br>
 
-  <br><br>
+        <span th:text="'Привет, ' + ${currentPrincipalUser.getUsername()} + '!'" class="malina_28px_orange"></span>
 
-  <span class="malina_28px_orange">Адреса</span>
+        <br><br>
 
-  <br><br>
+        <span th:text="'Телефон: ' + ${currentPrincipalUser.getPhoneNumber()} + ' ' + ' Email: ' + ${currentPrincipalUser.getEmail()}" class="helvetica_15px_darkgray"></span>
 
-  <div th:if="${deliveryAddresses != null}">
-    <th:block th:each="address : ${deliveryAddresses}">
-      <span th:text="'улица ' + ${address.getDeliveryStreet()} + ', дом ' + ${address.getDeliveryBuilding()} + ', подъезд '
+        <br><br>
+
+        <span class="malina_28px_orange">Адреса</span>
+
+        <br><br>
+
+        <div th:if="${deliveryAddresses != null}">
+            <th:block th:each="address : ${deliveryAddresses}">
+                    <span th:text="'улица ' + ${address.getDeliveryStreet()} + ', дом ' + ${address.getDeliveryBuilding()} + ', подъезд '
                     + ${address.getDeliveryEntrance()} + ', этаж ' + ${address.getDeliveryFloor()} + ', квартира '
                     + ${address.getDeliveryApartment()}"
-            class="helvetica_15px_darkgray"></span>
-      <br>
-    </th:block>
-    <br>
-    <div th:if="${deliveryAddresses.size() <= 5}">
-      <a href="/profile/new_delivery_address" class="helvetica_15px_darkgray">Добавить адресс доставки</a>
-    </div>
-  </div>
-  <div th:if="${deliveryAddresses == null}">
-    <a href="/profile/new_delivery_address" class="helvetica_15px_darkgray">Добавить адресс доставки</a>
-  </div>
+                          class="helvetica_15px_darkgray"></span>
+
+                <button name="deliveryAddressToDelete" th:value="${address.getId()}" class="delete_button_helvetica_15px_orange">
+                    Удалить
+                </button>
+
+                <br>
+            </th:block>
+            <br>
+            <div th:if="${deliveryAddresses.size() <= 4}">
+                <a href="/profile/new_delivery_address" class="helvetica_15px_darkgray">Добавить адресс доставки</a>
+            </div>
+        </div>
+        <div th:if="${deliveryAddresses == null}">
+            <a href="/profile/new_delivery_address" class="helvetica_15px_darkgray">Добавить адресс доставки</a>
+        </div>
+
+        <br><br>
+
+        <span class="malina_28px_orange">Кредитные карты</span>
+
+        <br><br>
+
+        <div th:if="${creditCards != null}">
+            <th:block th:each="card : ${creditCards}">
+                    <span th:text="${card.getCcNumberWithAsterisk()}" class="helvetica_15px_darkgray"></span>
+
+                <button name="creditCardToDelete" th:value="${card.getId()}" class="delete_button_helvetica_15px_orange">
+                    Удалить
+                </button>
+
+                <br>
+            </th:block>
+            <br>
+            <div th:if="${creditCards.size() <= 2}">
+                <a href="/profile/new_credit_card" class="helvetica_15px_darkgray">Добавить карту</a>
+            </div>
+        </div>
+        <div th:if="${creditCards == null}">
+            <a href="/profile/new_credit_card" class="helvetica_15px_darkgray">Добавить карту</a>
+        </div>
 
 
-  <br>
-
+        <br>
+    </form>
 </div>
 
 </body>

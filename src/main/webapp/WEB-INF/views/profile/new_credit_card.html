@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>New credit card</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+<header>
+    <div th:insert="fragments/header :: header"></div>
+</header>
+
+<div class="container mt-5">
+
+    <form th:method="POST" th:action="@{/profile/new_credit_card}" th:object="${creditCard}">
+
+        <br><br>
+
+        <span class="malina_28px_orange">Введите данные</span>
+
+        <br><br>
+
+
+            <div class="credit_card_items">
+                <label for="ccNumber" class="helvetica_15px_darkgray">Номер </label>
+                <br>
+                <input type="text" th:field="*{ccNumber}" id="ccNumber" size="24"/>
+                <div style="color:red" th:if="${#fields.hasErrors('ccNumber')}" th:errors="*{ccNumber}">Number Error</div>
+            </div>
+            <div class="credit_card_items">
+                <label for="ccExpiration" class="helvetica_15px_darkgray">Окончание </label>
+                <br>
+                <input type="text" th:field="*{ccExpiration}" id="ccExpiration" size="24"/>
+                <div style="color:red" th:if="${#fields.hasErrors('ccExpiration')}" th:errors="*{ccExpiration}">Expiration Error</div>
+            </div>
+            <div class="credit_card_items">
+                <label for="ccCVV" class="helvetica_15px_darkgray">CVV </label>
+                <br>
+                <input type="text" th:field="*{ccCVV}" id="ccCVV" size="24"/>
+                <div style="color:red" th:if="${#fields.hasErrors('ccCVV')}" th:errors="*{ccCVV}">CVV Error</div>
+            </div>
+
+
+
+        <br><br>
+
+        <input type="submit" value="Сохранить!" class="submit_button_malina_20px_orange_lightgray"/>
+
+        <br><br><br><br>
+
+    </form>
+
+</div>
+
+</body>
+</html>

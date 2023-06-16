@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
@@ -28,12 +27,14 @@ public class HomeController {
     private final TacosRepository tacoRepository;
     private final CartsRepository cartsRepository;
     private final UsersRepository usersRepository;
+    private final DeliveryAddressesRepository deliveryAddressesRepository;
 
     @Autowired
-    public HomeController(TacosRepository tacoRepository, CartsRepository cartsRepository, UsersRepository usersRepository) {
+    public HomeController(TacosRepository tacoRepository, CartsRepository cartsRepository, UsersRepository usersRepository, DeliveryAddressesRepository deliveryAddressesRepository) {
         this.tacoRepository = tacoRepository;
         this.cartsRepository = cartsRepository;
         this.usersRepository = usersRepository;
+        this.deliveryAddressesRepository = deliveryAddressesRepository;
     }
 
 
@@ -135,9 +136,18 @@ public class HomeController {
             }
         }
 
-        // Передаём на view корзины все тако в заказе и общую стоимость заказа.
+//        // Получаем список сохранённых адресов доставки пользователя.
+//        List<DeliveryAddress> deliveryAddresses = deliveryAddressesRepository.findAllByUserId(currentPrincipalUser.getId());
+//
+//        // Если у пользователя есть сохранённые адреса доставки, то добавляем их в модель, чтобы отобразить их на странице.
+//        if (!deliveryAddresses.isEmpty()) {
+//            model.addAttribute("deliveryAddresses", deliveryAddresses);
+//        }
+
+        // Передаём на view корзины все тако в заказе, общую стоимость заказа и текущего пользователя.
         model.addAttribute("cartTacos", cartTacos);
         model.addAttribute("totalPrise", totalPrise);
+        model.addAttribute("currentPrincipalUser", currentPrincipalUser);
 
         return "cart";
     }
@@ -145,10 +155,8 @@ public class HomeController {
 
     @PostMapping("/cart")
     public String createPurchase(@ModelAttribute("purchase") @Valid Purchase purchase,
-                                 @RequestParam(value = "tacoToDelete") Taco tacoToDelete,
+//                                 @RequestParam(value = "tacoToDelete") Taco tacoToDelete,
                                  BindingResult bindingResult) {
-
-        System.out.println(tacoToDelete);
 
         /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
         List<Taco> cartTacos;
@@ -167,6 +175,13 @@ public class HomeController {
             cartTacos = new ArrayList<>();
         }
         /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
+
+
+//        if (tacoToDelete != null) {
+//            cartTacos.remove(tacoToDelete);
+//            return "redirect:/cart";
+//        }
+
 
         // Валидируем, правильно ли заполнены все необходимые формы и не пустой ли заказ.
         if (bindingResult.hasErrors() || cartTacos.isEmpty()) {

@@ -19,8 +19,8 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int userId;
-    @NotBlank(message = "Name must not be empty")
-    @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
+//    @NotBlank(message = "Name must not be empty")
+    @Size(min = 2, max = 30, message = "Name must not be empty and must be between 2 and 30 characters")
     private String deliveryName;
     //    @Pattern(regexp="^(\\+\\d{3}( )?)?((\\(\\d{2}\\))|\\d{1,3})[- .]?\\d{7}[- .]?$", message="Must be formatted +375 29 1234567")
     private String deliveryPhoneNumber;

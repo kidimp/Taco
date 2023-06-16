@@ -28,28 +28,29 @@
 
         <br><br>
 
-        <div>
-            <th:block th:each="taco : ${cartTacos}">
-
+            <div>
+                <th:block th:each="taco : ${cartTacos}">
 
                 <span th:if="${taco.getSize() == 0.75}"
                       th:text="${taco.getName()} + ' ' + 'маленькое' + ' ' + ${taco.getPrice()} + ' byn'"
                       class="helvetica_15px_darkgray"></span>
 
-                <span th:if="${taco.getSize() == 1}"
-                      th:text="${taco.getName()} + ' ' + 'среднее' + ' ' + ${taco.getPrice()} + ' byn'"
-                      class="helvetica_15px_darkgray"></span>
+                    <span th:if="${taco.getSize() == 1}"
+                          th:text="${taco.getName()} + ' ' + 'среднее' + ' ' + ${taco.getPrice()} + ' byn'"
+                          class="helvetica_15px_darkgray"></span>
 
-                <span th:if="${taco.getSize() == 1.25}"
-                      th:text="${taco.getName()} + ' ' + 'большое' + ' ' + ${taco.getPrice()} + ' byn'"
-                      class="helvetica_15px_darkgray"></span>
+                    <span th:if="${taco.getSize() == 1.25}"
+                          th:text="${taco.getName()} + ' ' + 'большое' + ' ' + ${taco.getPrice()} + ' byn'"
+                          class="helvetica_15px_darkgray"></span>
 
-                <button name="tacoToDelete" value="tacoToDelete" class="submit_button_malina_15px_orange_lightgray">Удалить</button>
+                    <button name="tacoToDelete" th:value="${taco.getId()}" class="delete_button_helvetica_15px_orange">
+                        Удалить
+                    </button>
 
-                <br>
+                    <br>
 
-            </th:block>
-        </div>
+                </th:block>
+            </div>
 
         <br>
 
@@ -63,16 +64,14 @@
 
         <label for="deliveryName" class="helvetica_15px_darkgray">Ваше имя </label>
         <br>
-        <input type="text" th:field="*{deliveryName}" id="deliveryName" size="24"/>
-        <div style="color:red" th:if="${#fields.hasErrors('deliveryName')}" th:errors="*{deliveryName}">Delivery name
-            Error
-        </div>
+        <input type="text" size="24" id="deliveryName" name="deliveryName" th:field="*{deliveryName}" data-toggle="popover"/>
+        <div style="color:red" th:if="${#fields.hasErrors('deliveryName')}" th:errors="*{deliveryName}">Delivery name Error</div>
 
         <br><br>
 
         <label for="deliveryPhoneNumber" class="helvetica_15px_darkgray">Ваш мобильный телефон </label>
         <br>
-        <input type="text" th:field="*{deliveryPhoneNumber}" id="deliveryPhoneNumber" size="24"/>
+        <input type="text" size="24" id="deliveryPhoneNumber" name="deliveryPhoneNumber" th:field="*{deliveryPhoneNumber}"/>
         <div style="color:red" th:if="${#fields.hasErrors('deliveryPhoneNumber')}" th:errors="*{deliveryPhoneNumber}">Delivery phone number Error</div>
 
         <br><br>
@@ -82,31 +81,36 @@
                 <label for="deliveryStreet" class="helvetica_15px_darkgray">Улица </label>
                 <br>
                 <input type="text" th:field="*{deliveryStreet}" id="deliveryStreet" size="24"/>
+<!--                <select id="deliveryStreet" name="deliveryStreet">-->
+<!--                    <option th:each="deliveryAddress : ${deliveryAddresses}"-->
+<!--                            th:value="${deliveryAddress.getId()}"-->
+<!--                            th:text="${deliveryAddress.getDeliveryStreet()}">-->
+<!--                </select>-->
                 <div style="color:red" th:if="${#fields.hasErrors('deliveryStreet')}" th:errors="*{deliveryStreet}">Delivery street Error</div>
             </li>
             <li class="delivery_address_items">
                 <label for="deliveryStreet" class="helvetica_15px_darkgray">Дом </label>
                 <br>
                 <input type="text" th:field="*{deliveryBuilding}" id="deliveryBuilding" size="6"/>
-                <div style="color:red" th:if="${#fields.hasErrors('deliveryBuilding')}" th:errors="*{deliveryBuilding}">Delivery building Error</div>
+                <div style="color:red;width:100px" th:if="${#fields.hasErrors('deliveryBuilding')}" th:errors="*{deliveryBuilding}">Delivery building Error</div>
             </li>
             <li class="delivery_address_items">
                 <label for="deliveryEntrance" class="helvetica_15px_darkgray">Подъезд </label>
                 <br>
                 <input type="text" th:field="*{deliveryEntrance}" id="deliveryEntrance" size="6"/>
-                <div style="color:red" th:if="${#fields.hasErrors('deliveryEntrance')}" th:errors="*{deliveryEntrance}">Delivery entrance Error</div>
+                <div style="color:red;width:100px" th:if="${#fields.hasErrors('deliveryEntrance')}" th:errors="*{deliveryEntrance}">Delivery entrance Error</div>
             </li>
             <li class="delivery_address_items">
                 <label for="deliveryFloor" class="helvetica_15px_darkgray">Этаж </label>
                 <br>
                 <input type="text" th:field="*{deliveryFloor}" id="deliveryFloor" size="6"/>
-                <div style="color:red" th:if="${#fields.hasErrors('deliveryFloor')}" th:errors="*{deliveryFloor}">Delivery floor Error</div>
+                <div style="color:red;width:100px" th:if="${#fields.hasErrors('deliveryFloor')}" th:errors="*{deliveryFloor}">Delivery floor Error</div>
             </li>
             <li class="delivery_address_items">
                 <label for="deliveryApartment" class="helvetica_15px_darkgray">Квартира </label>
                 <br>
-                <input type="text" th:field="*{deliveryApartment}" id="deliveryApartment" size="6"/>
-                <div style="color:red" th:if="${#fields.hasErrors('deliveryApartment')}" th:errors="*{deliveryApartment}">Delivery apartment Error</div>
+                <input type="text" th:field="*{deliveryApartment}" id="deliveryApartment" size="6" required/>
+                <div style="color:red;width:100px" th:if="${#fields.hasErrors('deliveryApartment')}" th:errors="*{deliveryApartment}">Delivery apartment Error</div>
             </li>
         </ul>
 
@@ -114,7 +118,7 @@
 
         <label for="deliveryComment" class="helvetica_15px_darkgray">Комментарий к заказу </label>
         <br>
-        <input type="text" th:field="*{deliveryComment}" id="deliveryComment" size="83" required/>
+        <input type="text" th:field="*{deliveryComment}" id="deliveryComment" size="83"/>
         <div style="color:red" th:if="${#fields.hasErrors('deliveryComment')}" th:errors="*{deliveryComment}">Delivery Comment Error</div>
 
         <br>

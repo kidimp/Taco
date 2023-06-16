@@ -111,16 +111,14 @@
     background-clip: padding-box;
 }
 
-.submit_button_malina_15px_orange_lightgray {
+.delete_button_helvetica_15px_orange {
     font-size: 15px;
-    line-height: 1.1;
-    font-family:'ALS Malina';
+    font-family:'Helvetica';
     color: #ff5200;
-    background:#e9e9e9;
+    background:transparent;
     border-width:0;
-    padding: 7px 12px 8px;
+    padding: 0px 0px 0px 0px;
     margin: 0;
     min-width:100px;
-    border-radius: 11px;
     background-clip: padding-box;
 }

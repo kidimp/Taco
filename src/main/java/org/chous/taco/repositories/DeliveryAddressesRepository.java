@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DeliveryAddressesRepository extends CrudRepository<DeliveryAddress, Integer> {
     List<DeliveryAddress> findAllByUserId(int userId);
+    void deleteDeliveryAddressById(int id);
 }

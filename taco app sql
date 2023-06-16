@@ -335,8 +335,8 @@ values
 
 
 use taco_app;
-insert user(email, is_active, password, role, username)
+insert user(email, is_active, password, role, username, phone_number)
 values
-('a@a.a', 1, 123, 'ROLE_ADMIN', 'Anne'),
-('q@q.q', 1, 123, 'ROLE_USER', 'Chous');
+('a@a.a', 1, 123, 'ROLE_ADMIN', 'Anne', '+375 29 111-11-11'),
+('q@q.q', 1, 123, 'ROLE_USER', 'Chous', '+375 29 222-22-22');
 
