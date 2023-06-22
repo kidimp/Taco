@@ -2,7 +2,6 @@ package org.chous.taco.controllers;
 
 import org.chous.taco.models.*;
 import org.chous.taco.repositories.CartsRepository;
-import org.chous.taco.repositories.DeliveryAddressesRepository;
 import org.chous.taco.repositories.UsersRepository;
 import org.chous.taco.repositories.TacosRepository;
 import org.chous.taco.services.UserService;
@@ -27,14 +26,12 @@ public class HomeController {
     private final TacosRepository tacoRepository;
     private final CartsRepository cartsRepository;
     private final UsersRepository usersRepository;
-//    private final DeliveryAddressesRepository deliveryAddressesRepository;
 
     @Autowired
-    public HomeController(TacosRepository tacoRepository, CartsRepository cartsRepository, UsersRepository usersRepository, DeliveryAddressesRepository deliveryAddressesRepository) {
+    public HomeController(TacosRepository tacoRepository, CartsRepository cartsRepository, UsersRepository usersRepository) {
         this.tacoRepository = tacoRepository;
         this.cartsRepository = cartsRepository;
         this.usersRepository = usersRepository;
-//        this.deliveryAddressesRepository = deliveryAddressesRepository;
     }
 
 
@@ -66,42 +63,36 @@ public class HomeController {
 
         /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
 
-        // Определяем текущего авторизированного пользователя.
-        User currentPrincipalUser = UserService.getCurrentPrincipleUser();
-
-        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
-        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
-
-        // Если активная корзина есть, то берём из неё все тако, чтобы отобразить их на странице.
-        // Если активной корзины нет, то создаём новую активную корзину для текущего пользователя.;
-        if (cart == null) {
-            cart = new Cart();
-        }
-        List<Taco> cartTacos = cart.getTacos();
-        // Присваиваем новой активной карзине текущего пользователя.
-        cart.setUserId(currentPrincipalUser.getId());
-        /*if (cart != null) {
-            cartTacos = cart.getTacos();
-        } else {
-            cart = new Cart();
-            // Присваиваем новой активной карзине текущего пользователя.
-            cart.setUserId(currentPrincipalUser.getId());
-        }*/
-
         // Определяем, какой пользователь пытается добавить тако в корзину.
         // Если это аноним, то отправляем его на страницу логина.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() != "anonymousUser") {
+        if (authentication.getPrincipal() == "anonymousUser") {
+            return "redirect:/login";
+        } else {
+
+            // Определяем текущего авторизированного пользователя.
+            User currentPrincipalUser = UserService.getCurrentPrincipleUser();
+
+            // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
+            Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+
+            // Если активной корзины нет, то создаём новую активную корзину для текущего пользователя.;
+            if (cart == null) {
+                cart = new Cart();
+            }
+            List<Taco> cartTacos = cart.getTacos();
+            // Присваиваем новой активной карзине текущего пользователя.
+            cart.setUserId(currentPrincipalUser.getId());
+
             // Здесь добавляем тако, которые выбрал пользователь, в список.
             cartTacos.add(tacoToAdd);
-        } else {
-            return "redirect:/login";
-        }
 
-        // Список с выбранными пользователем тако добавляем в корзину.
-        cart.setTacos(cartTacos);
-        // Сохраняем корзину в базу данных.
-        cartsRepository.save(cart);
+
+            // Список с выбранными пользователем тако добавляем в корзину.
+            cart.setTacos(cartTacos);
+            // Сохраняем корзину в базу данных.
+            cartsRepository.save(cart);
+        }
 
         /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
 
@@ -180,7 +171,7 @@ public class HomeController {
 
         // Валидируем, правильно ли заполнены все необходимые формы и не пустой ли заказ.
         if (bindingResult.hasErrors() || cartTacos.isEmpty()) {
-            return "cart";
+            return "redirect:/cart";
         }
 
         // Делаем корзину неактивной (погашаем корзину).
@@ -234,8 +225,8 @@ public class HomeController {
         // Сохраняем корзину в базу данных.
         cartsRepository.save(cart);
 
-        return"redirect:/cart";
-}
+        return "redirect:/cart";
+    }
 
 
     @GetMapping("/done")

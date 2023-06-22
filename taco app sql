@@ -16,10 +16,10 @@ values
 
 insert ingredient(name, type, img_path, weight, calories, protein, fat, carbs, price)
 values
-('Томаты', 2, 'img_path', 41, 6, 0, 0, 1, 1.0),
-('Маринованные огурчики', 2, 'img_path', 42, 5, 1, 0, 0, 1.0),
-('Болгарский перец', 2, 'img_path', 40, 8, 0, 0, 1, 1.0),
-('Халапеньо', 2, 'img_path', 38, 9, 0, 0, 2, 1.5),
+('Томаты', 2, '/images/ingredients/veggie/tomatoes.png', 41, 6, 0, 0, 1, 1.0),
+('Маринованные огурчики', 2, '/images/ingredients/veggie/pickles.png', 42, 5, 1, 0, 0, 1.0),
+('Болгарский перец', 2, '/images/ingredients/veggie/bell_peppers.png', 40, 8, 0, 0, 1, 1.0),
+('Халапеньо', 2, '/images/ingredients/veggie/jalapenos.png', 38, 9, 0, 0, 2, 1.5),
 ('Лук белый', 2, 'img_path', 39, 13, 0, 0, 3, 1.0),
 ('Лук маринованный', 2, 'img_path', 41, 6, 0, 0, 1, 1.0),
 ('Лук во фритюре', 2, 'img_path', 38, 66, 3, 1, 13, 1.0),

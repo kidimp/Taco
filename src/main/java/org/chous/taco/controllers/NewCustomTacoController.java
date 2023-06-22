@@ -115,38 +115,35 @@ public class NewCustomTacoController {
 
         /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
 
-        List<Taco> cartTacos = new ArrayList<>();
-
-        // Определяем текущего авторизированного пользователя.
-        User currentPrincipalUser = getCurrentPrincipleUser();
-
-        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
-        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
-
-        // Если активная корзина есть, то берём из неё все тако, чтобы отобразить их на странице.
-        // Если активной корзины нет, то создаём новую активную корзину для текущего пользователя.
-        if (cart != null) {
-            cartTacos = cart.getTacos();
-        } else {
-            cart = new Cart();
-            // Присваиваем новой активной карзине текущего пользователя.
-            cart.setUserId(currentPrincipalUser.getId());
-        }
-
         // Определяем, какой пользователь пытается добавить тако в корзину.
         // Если это аноним, то отправляем его на страницу логина.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() != "anonymousUser") {
+        if (authentication.getPrincipal() == "anonymousUser") {
+            return "redirect:/login";
+        } else {
+
+            // Определяем текущего авторизированного пользователя.
+            User currentPrincipalUser = getCurrentPrincipleUser();
+
+            // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
+            Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+
+            // Если активной корзины нет, то создаём новую активную корзину для текущего пользователя.;
+            if (cart == null) {
+                cart = new Cart();
+            }
+            List<Taco> cartTacos = cart.getTacos();
+            // Присваиваем новой активной карзине текущего пользователя.
+            cart.setUserId(currentPrincipalUser.getId());
+
             // Здесь добавляем тако, которые выбрал пользователь, в список.
             cartTacos.add(taco);
-        } else {
-            return "redirect:/login";
-        }
 
-        // Список с выбранными пользователем тако добавляем в корзину.
-        cart.setTacos(cartTacos);
-        // Сохраняем корзину в базу данных.
-        cartsRepository.save(cart);
+            // Список с выбранными пользователем тако добавляем в корзину.
+            cart.setTacos(cartTacos);
+            // Сохраняем корзину в базу данных.
+            cartsRepository.save(cart);
+        }
 
         /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
 
