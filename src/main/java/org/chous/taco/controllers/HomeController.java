@@ -4,12 +4,14 @@ import org.chous.taco.models.*;
 import org.chous.taco.repositories.CartsRepository;
 import org.chous.taco.repositories.UsersRepository;
 import org.chous.taco.repositories.TacosRepository;
+import org.chous.taco.services.MailService;
 import org.chous.taco.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,15 +23,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-public class HomeController {
+public class HomeController extends BaseController {
 
     private final TacosRepository tacoRepository;
-    private final CartsRepository cartsRepository;
     private final UsersRepository usersRepository;
+    private final MailService mailService;
 
     @Autowired
-    public HomeController(TacosRepository tacoRepository, CartsRepository cartsRepository, UsersRepository usersRepository) {
+    public HomeController(TacosRepository tacoRepository, CartsRepository cartsRepository, UsersRepository usersRepository, MailService mailService) {
         this.tacoRepository = tacoRepository;
+        this.mailService = mailService;
         this.cartsRepository = cartsRepository;
         this.usersRepository = usersRepository;
     }
@@ -61,40 +64,14 @@ public class HomeController {
     @PostMapping("/")
     public String home(@RequestParam(value = "tacoToAdd") Taco tacoToAdd) {
 
-        /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
-
         // Определяем, какой пользователь пытается добавить тако в корзину.
         // Если это аноним, то отправляем его на страницу логина.
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() == "anonymousUser") {
             return "redirect:/login";
         } else {
-
-            // Определяем текущего авторизированного пользователя.
-            User currentPrincipalUser = UserService.getCurrentPrincipleUser();
-
-            // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
-            Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
-
-            // Если активной корзины нет, то создаём новую активную корзину для текущего пользователя.;
-            if (cart == null) {
-                cart = new Cart();
-            }
-            List<Taco> cartTacos = cart.getTacos();
-            // Присваиваем новой активной карзине текущего пользователя.
-            cart.setUserId(currentPrincipalUser.getId());
-
-            // Здесь добавляем тако, которые выбрал пользователь, в список.
-            cartTacos.add(tacoToAdd);
-
-
-            // Список с выбранными пользователем тако добавляем в корзину.
-            cart.setTacos(cartTacos);
-            // Сохраняем корзину в базу данных.
-            cartsRepository.save(cart);
+            addAndSafeTacoToCartOfCurrentPrincipalUser(tacoToAdd);
         }
-
-        /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
 
         return "redirect:/cart";
     }
@@ -103,23 +80,11 @@ public class HomeController {
     @GetMapping("/cart")
     public String cart(Model model, @ModelAttribute("purchase") Purchase purchase) {
 
-        /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
-        List<Taco> cartTacos;
-
         // Определяем текущего авторизированного пользователя.
         User currentPrincipalUser = UserService.getCurrentPrincipleUser();
 
         // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
-        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
-
-        // Если активная корзина есть, то берём из неё все тако, чтобы отобразить их на странице.
-        // Если активной корзины нет, то создаём новый пустой список тако.
-        if (cart != null) {
-            cartTacos = cart.getTacos();
-        } else {
-            cartTacos = new ArrayList<>();
-        }
-        /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
+        List<Taco> cartTacos = defineCurrentPrincipalUserCart(currentPrincipalUser);
 
         // Создаём переменную для суммарной цены всех тако в заказе.
         BigDecimal totalPrise = new BigDecimal("0.0");
@@ -151,23 +116,14 @@ public class HomeController {
     @PostMapping("/cart")
     public String createPurchase(@ModelAttribute("purchase") @Valid Purchase purchase, BindingResult bindingResult) {
 
-        /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
-        List<Taco> cartTacos;
-
         // Определяем текущего авторизированного пользователя.
         User currentPrincipalUser = UserService.getCurrentPrincipleUser();
 
         // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
-        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+        List<Taco> cartTacos = defineCurrentPrincipalUserCart(currentPrincipalUser);
 
-        // Если активная корзина есть, то берём из неё все тако, чтобы отобразить их на странице.
-        // Если активной корзины нет, то создаём новый пустой список тако.
-        if (cart != null) {
-            cartTacos = cart.getTacos();
-        } else {
-            cartTacos = new ArrayList<>();
-        }
-        /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") */
+        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
+        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
 
         // Валидируем, правильно ли заполнены все необходимые формы и не пустой ли заказ.
         if (bindingResult.hasErrors() || cartTacos.isEmpty()) {
@@ -192,6 +148,8 @@ public class HomeController {
         // Сохраняем обновлённые данные о пользователе и его заказах в базу данных.
         usersRepository.save(currentPrincipalUser);
 
+        activeCartMessage(currentPrincipalUser, cart);
+
         // Логика корзины и покупки разделена, чтобы мы могли правильно отображать и проверять поля в заказе,
         // пока пользователь заполняет корзину.
 
@@ -202,23 +160,14 @@ public class HomeController {
     @PostMapping("/deleteTaco")
     public String deleteTacoFromCart(@ModelAttribute("taco") Taco taco, @RequestParam(value = "tacoToDelete") Taco tacoToDelete) {
 
-        /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") и @PostMapping("/deleteTaco")*/
-        List<Taco> cartTacos;
-
         // Определяем текущего авторизированного пользователя.
         User currentPrincipalUser = UserService.getCurrentPrincipleUser();
 
         // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
-        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+        List<Taco> cartTacos = defineCurrentPrincipalUserCart(currentPrincipalUser);
 
-        // Если активная корзина есть, то берём из неё все тако, чтобы отобразить их на странице.
-        // Если активной корзины нет, то создаём новый пустой список тако.
-        if (cart != null) {
-            cartTacos = cart.getTacos();
-        } else {
-            cartTacos = new ArrayList<>();
-        }
-        /** FIX IT Дублируется код в @GetMapping("/cart") и @PostMapping("/cart") и @PostMapping("/deleteTaco") */
+        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
+        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
 
         cartTacos.remove(tacoToDelete);
 
@@ -244,6 +193,42 @@ public class HomeController {
     @GetMapping("/stats")
     public String stats() {
         return "/stats";
+    }
+
+    private List<Taco> defineCurrentPrincipalUserCart(User currentPrincipalUser) {
+
+        // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
+        Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
+
+        // Если активная корзина есть, то берём из неё все тако, чтобы отобразить их на странице.
+        // Если активной корзины нет, то создаём новый пустой список тако.
+        if (cart != null) {
+            return cart.getTacos();
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+
+    public void activeCartMessage(User user, Cart cart) {
+        List<Taco> tacos = cart.getTacos();
+        StringBuilder tacosInfoRaw = new StringBuilder();
+        for (Taco taco : tacos) {
+            tacosInfoRaw.append(taco.getName()).append(" ").append(taco.getPrice()).append(" byn").append(",\n");
+        }
+        String tacosInfo = tacosInfoRaw.substring(0, tacosInfoRaw.length() - 2); // Два знака, потому что коретка
+
+        if (!StringUtils.isEmpty(user.getEmail())) {
+            String subject = "We already wrapping your taco";
+            String text = String.format(
+                    "Hello, %s! \n" +
+                            "Thank you for your order!\n" +
+                            "You ordered: \n" + tacosInfo,
+                    user.getUsername()
+            );
+
+            mailService.send(user.getEmail(), subject, text);
+        }
     }
 
 }

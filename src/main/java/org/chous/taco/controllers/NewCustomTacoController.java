@@ -1,6 +1,5 @@
 package org.chous.taco.controllers;
 
-import org.chous.taco.models.Cart;
 import org.chous.taco.models.Ingredient;
 import org.chous.taco.models.Taco;
 import org.chous.taco.models.User;
@@ -20,17 +19,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
-public class NewCustomTacoController {
+public class NewCustomTacoController extends BaseController {
 
     private final TacosRepository tacosRepository;
     private final IngredientsRepository ingredientRepository;
-    private final CartsRepository cartsRepository;
     private final UsersRepository usersRepository;
 
     private int weight = 0;
@@ -74,17 +71,17 @@ public class NewCustomTacoController {
     }
 
     @PostMapping("/new_custom_taco")
-    public String createCustomTaco(@ModelAttribute("newCustomTaco") @Valid Taco taco, BindingResult bindingResult) {
+    public String createCustomTaco(@ModelAttribute("newCustomTaco") @Valid Taco tacoToAdd, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "new_custom_taco";
         }
 
-        // Из view в моделе Taco taco (@ModelAttribute("newCustomTaco")) пришла информация о всех ингридеентах
+        // Из view в моделе Taco tacoToAdd (@ModelAttribute("newCustomTaco")) пришла информация о всех ингридеентах
         // текущего кастомного тако. Сохраняем эти ингридиенты в список и при помощи сеттера записываем этот список в
         // объект тако.
-        List<Ingredient> ingredientsForCurrentTaco = taco.getIngredients();
-        taco.setIngredients(ingredientsForCurrentTaco);
+        List<Ingredient> ingredientsForCurrentTaco = tacoToAdd.getIngredients();
+        tacoToAdd.setIngredients(ingredientsForCurrentTaco);
 
         // Пробегаемся по списку ингредиентов для текущего кастомного тако и узнаём суммарные значения нужных нам полей.
         for (Ingredient i : ingredientsForCurrentTaco) {
@@ -96,24 +93,22 @@ public class NewCustomTacoController {
             price = price.add(i.getPrice());
         }
 
-        double sizeMultiplier = taco.getSize();
+        double sizeMultiplier = tacoToAdd.getSize();
 
         // Значения полей умнажаем на размерный коэффициент и сохраняем значения в объект тако.
-        taco.setWeight((int) (weight * sizeMultiplier));
-        taco.setCalories((int) (calories * sizeMultiplier));
-        taco.setProtein((int) (protein * sizeMultiplier));
-        taco.setFat((int) (fat * sizeMultiplier));
-        taco.setCarbs((int) (carbs * sizeMultiplier));
-        taco.setPrice(price.multiply(BigDecimal.valueOf(sizeMultiplier)));
+        tacoToAdd.setWeight((int) (weight * sizeMultiplier));
+        tacoToAdd.setCalories((int) (calories * sizeMultiplier));
+        tacoToAdd.setProtein((int) (protein * sizeMultiplier));
+        tacoToAdd.setFat((int) (fat * sizeMultiplier));
+        tacoToAdd.setCarbs((int) (carbs * sizeMultiplier));
+        tacoToAdd.setPrice(price.multiply(BigDecimal.valueOf(sizeMultiplier)));
 
         // Помечаем, что мы создаём кастомный тако.
-        taco.setCustom(true);
+        tacoToAdd.setCustom(true);
 
         // Сохраняем заполненый объект тако в базу данных. Объект сохранился последним в таблице и после сохранения
         // автоматически получил свой уникальный id.
-        tacosRepository.save(taco);
-
-        /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
+        tacosRepository.save(tacoToAdd);
 
         // Определяем, какой пользователь пытается добавить тако в корзину.
         // Если это аноним, то отправляем его на страницу логина.
@@ -121,33 +116,10 @@ public class NewCustomTacoController {
         if (authentication.getPrincipal() == "anonymousUser") {
             return "redirect:/login";
         } else {
-
-            // Определяем текущего авторизированного пользователя.
-            User currentPrincipalUser = getCurrentPrincipleUser();
-
-            // Определяем, есть ли у текущего авторизированного пользователя активная (не погашенная) корзина.
-            Cart cart = cartsRepository.findCartByUserIdAndActive(currentPrincipalUser.getId(), true);
-
-            // Если активной корзины нет, то создаём новую активную корзину для текущего пользователя.;
-            if (cart == null) {
-                cart = new Cart();
-            }
-            List<Taco> cartTacos = cart.getTacos();
-            // Присваиваем новой активной карзине текущего пользователя.
-            cart.setUserId(currentPrincipalUser.getId());
-
-            // Здесь добавляем тако, которые выбрал пользователь, в список.
-            cartTacos.add(taco);
-
-            // Список с выбранными пользователем тако добавляем в корзину.
-            cart.setTacos(cartTacos);
-            // Сохраняем корзину в базу данных.
-            cartsRepository.save(cart);
+            addAndSafeTacoToCartOfCurrentPrincipalUser(tacoToAdd);
         }
 
-        /** FIX IT Дублируется код в контроллерах HomeController и NewCustomTacoController */
-
-        // Очищаем значения полей тако, чтобы можно было создать ещё одно тако с нуля.
+        // Очищаем значения полей тако, чтобы можно было создать ещё один кастомный тако с нуля.
         clean();
 
         return "redirect:/cart";
